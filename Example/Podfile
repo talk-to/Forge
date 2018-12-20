@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Forge_Example' do
+  pod 'Forge', :path => '../'
+
+  target 'Forge_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

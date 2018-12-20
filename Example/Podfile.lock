@@ -1,0 +1,16 @@
+PODS:
+  - Forge (0.1.0)
+
+DEPENDENCIES:
+  - Forge (from `../`)
+
+EXTERNAL SOURCES:
+  Forge:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Forge: ed260edc9afd9273d74d6622000e391670332edd
+
+PODFILE CHECKSUM: 22cc46cf18e4ce68dfcba7f2cfaa3c831da76090
+
+COCOAPODS: 1.5.3
