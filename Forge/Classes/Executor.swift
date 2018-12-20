@@ -1,5 +1,5 @@
 
-enum ExecutorError: Error {
+public enum ExecutorError: Error {
 
 }
 
