@@ -1,5 +1,5 @@
 
-class TaskManager {
+public class Forge {
 
   public weak var changeManager: ChangeManager?
 
@@ -12,6 +12,6 @@ class TaskManager {
   }
 }
 
-extension TaskManager: ExecutorCallbacks {
+extension Forge: ExecutorCallbacks {
 
 }
