@@ -1,6 +1,8 @@
 
 public class Forge {
 
+  public init() {}
+
   public weak var changeManager: ChangeManager?
 
   public func submit(task: Task) {
