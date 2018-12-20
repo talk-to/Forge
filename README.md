@@ -6,6 +6,7 @@
 
 Task handler for iOS that can persist tasks across restarts and intelligently retry them
 
+Spec: https://docs.google.com/document/d/13LBDvwLBhahtnTZs5nPMVRNKRyCtP-MZ7yHMkVamfT0/edit#
 
 ## Example
 
