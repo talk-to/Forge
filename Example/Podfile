@@ -2,12 +2,6 @@ use_frameworks!
 
 platform :ios, '10.0'
 
-target 'Forge_Example' do
+target 'Forge_Tests' do
   pod 'Forge', :path => '../'
-
-  target 'Forge_Tests' do
-    inherit! :search_paths
-
-
-  end
 end
