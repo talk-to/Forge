@@ -293,12 +293,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Forge_Example/Pods-Forge_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Forge/Forge.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Forge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
