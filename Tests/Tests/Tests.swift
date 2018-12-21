@@ -14,7 +14,7 @@ class Tests: XCTestCase {
   }
 
   func testForgeCanBeInitialised() {
-    XCTAssertNotNil(Forge())
+    XCTAssertNotNil(Forge(with: "test"))
   }
 
   func testPerformanceExample() {
