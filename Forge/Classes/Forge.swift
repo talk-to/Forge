@@ -24,4 +24,6 @@ public class Forge {
 
 extension Forge: ExecutorCallbacks {
 
+  public func didComplete(task: Task, with: Result<Bool, ExecutorError>) {
+  }
 }
