@@ -8,6 +8,8 @@ import Foundation
 public protocol IDType: Codable {
 }
 
+extension String: IDType {}
+
 public protocol Task: Codable {
 
   init(id: IDType)
