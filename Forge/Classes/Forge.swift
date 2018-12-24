@@ -6,9 +6,11 @@ public class Forge {
   /// Is used for persistence name so that multiple instances do not end up using
   /// same persistence layer.
   let UUID: String
+  let persistor: Persistor
 
   public init(with UUID: String) {
     self.UUID = UUID
+    self.persistor = Persistor(UUID: UUID)
   }
 
   public weak var changeManager: ChangeManager?

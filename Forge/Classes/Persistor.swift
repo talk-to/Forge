@@ -15,6 +15,12 @@ class Persistor {
   func tasks(with id: IDType) -> [Task] {
     return []
   }
+
+  let UUID: String
+  init(UUID: String) {
+    self.UUID = UUID
+  }
+
 }
 
 struct PersistentTask {
