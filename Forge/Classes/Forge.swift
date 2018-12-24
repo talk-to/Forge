@@ -23,8 +23,12 @@ public class Forge {
     }
   }
 
-  public func register(executor: Executor, for type: IDType) {
-
+  var executors = [String: Executor]()
+  public func register(executor: Executor, for type: String) {
+    executors[type] = executor
+    for pTask in persistor.tasks(ofType: type) {
+      executor.execute(task: pTask.task)
+    }
   }
 }
 
