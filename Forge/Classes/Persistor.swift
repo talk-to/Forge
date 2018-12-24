@@ -1,18 +1,18 @@
 
 class Persistor {
-  func save(task: Task) {
+  func save(task: PersistentTask) {
 
   }
 
-  func completedTasks() -> [Task] {
+  func completedTasks() -> [PersistentTask] {
     return []
   }
 
-  func failedTasks() -> [Task] {
+  func failedTasks() -> [PersistentTask] {
     return []
   }
 
-  func tasks(with id: IDType) -> [Task] {
+  func tasks(ofType type: String) -> [PersistentTask] {
     return []
   }
 
