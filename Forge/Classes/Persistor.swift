@@ -24,6 +24,11 @@ class Persistor {
 }
 
 struct PersistentTask {
-  let task: Task
   let uniqueID: String
+  let task: Task
+
+  init(task: Task) {
+    uniqueID = UUID().uuidString
+    self.task = task
+  }
 }
