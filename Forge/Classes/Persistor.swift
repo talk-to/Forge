@@ -16,3 +16,8 @@ class Persistor {
     return []
   }
 }
+
+struct PersistentTask {
+  let task: Task
+  let uniqueID: String
+}
