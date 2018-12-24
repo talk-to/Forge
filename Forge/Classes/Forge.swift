@@ -7,33 +7,33 @@ public class Forge {
   /// same persistence layer.
   let UUID: String
   let persistor: Persistor
+  let executorsManager: ExecutorManager
 
   public init(with UUID: String) {
     self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
+    self.executorsManager = ExecutorManager()
   }
 
-  public weak var changeManager: ChangeManager?
+  public weak var changeManager: ChangeManager? {
+    get {
+      return executorsManager.changeManager
+    }
+    set {
+      executorsManager.changeManager = newValue
+    }
+  }
 
   public func submit(task: Task) {
     let pTask = PersistentTask(task: task)
     persistor.save(task: pTask)
-    if let executor = executors[pTask.task.id] {
-      executor.execute(task: pTask.task)
-    }
+    executorsManager.execute(task: pTask)
   }
 
-  var executors = [String: Executor]()
   public func register(executor: Executor, for type: String) {
-    executors[type] = executor
+    executorsManager.register(executor: executor, for: type)
     for pTask in persistor.tasks(ofType: type) {
-      executor.execute(task: pTask.task)
+      executorsManager.execute(task: pTask)
     }
-  }
-}
-
-extension Forge: ExecutorCallbacks {
-
-  public func didComplete(task: Task, with: Result<Bool, ExecutorError>) {
   }
 }
