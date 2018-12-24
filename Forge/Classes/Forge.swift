@@ -16,7 +16,11 @@ public class Forge {
   public weak var changeManager: ChangeManager?
 
   public func submit(task: Task) {
-
+    let pTask = PersistentTask(task: task)
+    persistor.save(task: pTask)
+    if let executor = executors[pTask.task.id] {
+      executor.execute(task: pTask.task)
+    }
   }
 
   public func register(executor: Executor, for type: IDType) {
