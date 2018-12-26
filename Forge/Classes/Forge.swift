@@ -7,33 +7,33 @@ public class Forge {
   /// same persistence layer.
   let UUID: String
   let persistor: Persistor
-  let executorsManager: ExecutionManager
+  let executionManager: ExecutionManager
 
   public init(with UUID: String) {
     self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
-    self.executorsManager = ExecutionManager()
+    self.executionManager = ExecutionManager()
   }
 
   public weak var changeManager: ChangeManager? {
     get {
-      return executorsManager.changeManager
+      return executionManager.changeManager
     }
     set {
-      executorsManager.changeManager = newValue
+      executionManager.changeManager = newValue
     }
   }
 
   public func submit(task: Task) {
     let pTask = PersistentTask(task: task)
     persistor.save(task: pTask)
-    executorsManager.execute(task: pTask)
+    executionManager.execute(task: pTask)
   }
 
   public func register(executor: Executor, for type: String) {
-    executorsManager.register(executor: executor, for: type)
+    executionManager.register(executor: executor, for: type)
     for pTask in persistor.tasks(ofType: type) {
-      executorsManager.execute(task: pTask)
+      executionManager.execute(task: pTask)
     }
   }
 }
