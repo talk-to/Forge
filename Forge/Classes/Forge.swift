@@ -7,12 +7,12 @@ public class Forge {
   /// same persistence layer.
   let UUID: String
   let persistor: Persistor
-  let executorsManager: ExecutorManager
+  let executorsManager: ExecutionManager
 
   public init(with UUID: String) {
     self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
-    self.executorsManager = ExecutorManager()
+    self.executorsManager = ExecutionManager()
   }
 
   public weak var changeManager: ChangeManager? {
