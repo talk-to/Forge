@@ -13,6 +13,7 @@ public class Forge {
     self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
     self.executionManager = ExecutionManager()
+    self.executionManager.executionDelegate = self.persistor
   }
 
   public weak var changeManager: ChangeManager? {

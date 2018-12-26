@@ -20,5 +20,14 @@ class Persistor {
   init(UUID: String) {
     self.UUID = UUID
   }
+}
 
+extension Persistor: ExecutionDelegate {
+  func delete(task: PersistentTask) {
+
+  }
+
+  func fail(task: PersistentTask, increaseRetryCount: Bool) {
+
+  }
 }
