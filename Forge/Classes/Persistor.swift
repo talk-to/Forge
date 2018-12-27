@@ -21,6 +21,7 @@ class Persistor {
 
   init(UUID: String) {
     self.UUID = UUID
+    // FIXME: UUID should be name of sqlite created too.
     self.persistentContainer = type(of: self).persistentContainer(UUID: UUID)
     persistentContainer.loadPersistentStores { (description, error) in
       if let error = error {
