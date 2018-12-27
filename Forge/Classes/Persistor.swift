@@ -34,8 +34,9 @@ class Persistor {
 }
 
 extension Persistor {
-  func save(task: PersistentTask) {
-
+  func save(pTask: PersistentTask) {
+    let cdTask = CDTask.insertTask(with: pTask.uniqueID, managedObjectContext: context)
+    cdTask.taskCoded = pTask.task.stringRepresentation()
   }
 
   func tasks(ofType type: String) -> [PersistentTask] {
