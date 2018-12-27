@@ -45,11 +45,26 @@ extension Persistor {
 }
 
 extension Persistor: ExecutionDelegate {
-  func delete(task: PersistentTask) {
-
+  private func cdTask(for pTask: PersistentTask) -> CDTask? {
+    return CDTask.task(with: pTask.uniqueID, managedObjectContext: context)
   }
 
-  func fail(task: PersistentTask, increaseRetryCount: Bool) {
+  func delete(pTask: PersistentTask) {
+    if let cdTask = cdTask(for: pTask) {
+      cdTask.managedObjectContext?.delete(cdTask)
+    } else {
+      print("Could not delete task \(pTask)")
+    }
+  }
 
+  func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
+    guard let cdTask = cdTask(for: pTask) else {
+      assertionFailure("Didn't find CDTask for \(pTask)")
+      return
+    }
+    if increaseRetryCount {
+      cdTask.countOfRetries += 1
+    }
+    // FIXME: set state
   }
 }
