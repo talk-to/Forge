@@ -12,4 +12,16 @@ class CDTask: NSManagedObject {
     return task
   }
 
+  class func task(with id: String, managedObjectContext: NSManagedObjectContext) -> CDTask? {
+    let fetchRequest = NSFetchRequest<CDTask>(entityName: entityName())
+    fetchRequest.predicate = NSPredicate(format: "uniqueID == %@", id)
+    fetchRequest.fetchLimit = 1
+    do {
+      return try managedObjectContext.fetch(fetchRequest).first
+    } catch {
+      print("Got error \(error)")
+      return nil
+    }
+  }
+
 }
