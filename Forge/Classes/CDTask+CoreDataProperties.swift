@@ -4,10 +4,6 @@ import CoreData
 
 extension CDTask {
 
-  @nonobjc class func fetchRequest() -> NSFetchRequest<CDTask> {
-    return NSFetchRequest<CDTask>(entityName: entityName())
-  }
-
   class func entityName () -> String {
     return "CDTask"
   }
