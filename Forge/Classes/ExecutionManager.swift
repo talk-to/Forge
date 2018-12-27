@@ -3,8 +3,8 @@ import Foundation
 import Result
 
 protocol ExecutionDelegate: class {
-  func delete(task: PersistentTask)
-  func fail(task: PersistentTask, increaseRetryCount: Bool)
+  func delete(pTask: PersistentTask)
+  func fail(pTask: PersistentTask, increaseRetryCount: Bool)
 }
 
 class ExecutionManager {
@@ -18,20 +18,18 @@ class ExecutionManager {
       executor.execute(task: pTask.task) { result in
         switch result {
         case .success(_):
-          executionDelegate?.delete(task: pTask)
+          executionDelegate?.delete(pTask: pTask)
           changeManager?.didComplete(task: pTask.task, result: result)
         case .failure(let error):
           switch error {
           case .NonRetriable:
-            executionDelegate?.delete(task: pTask)
+            executionDelegate?.delete(pTask: pTask)
             changeManager?.didComplete(task: pTask.task, result: result)
           case .ConditionalRetriable:
-            executionDelegate?.fail(task: pTask, increaseRetryCount: false)
-            // set as failed task
-            // retry later
+            executionDelegate?.fail(pTask: pTask, increaseRetryCount: false)
             return
           case .NonConditionalRetriable:
-            executionDelegate?.fail(task: pTask, increaseRetryCount: true)
+            executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
             changeManager?.didComplete(task: pTask.task, result: result) // Possible in only certain cases
           }
         }

@@ -27,7 +27,7 @@ public class Forge {
 
   public func submit(task: Task) {
     let pTask = PersistentTask(task: task)
-    persistor.save(task: pTask)
+    persistor.save(pTask: pTask)
     executionManager.execute(task: pTask)
   }
 
