@@ -16,3 +16,19 @@ public protocol Task: Codable {
   var id: String { get }
 
 }
+
+fileprivate let encoder = JSONEncoder()
+fileprivate let decoder = JSONDecoder()
+
+fileprivate let encoding = String.Encoding.utf8
+
+extension Task {
+  func stringRepresentation() -> String {
+    let taskData = try! encoder.encode(self)
+    return String(data: taskData, encoding: encoding)!
+  }
+
+  func task(from repr: String) -> Self {
+    return try! decoder.decode(Self.self, from: repr.data(using: encoding)!)
+  }
+}
