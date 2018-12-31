@@ -39,6 +39,16 @@ extension Persistor {
     cdTask.taskCoded = pTask.task.stringRepresentation()
   }
 
+  func markAllTasksReadyToExecute() {
+    let request = CDTask.request()
+    do {
+      try context.fetch(request).forEach { $0.state = .dormant }
+      try context.save()
+    } catch {
+      assertionFailure("Couldn't save all tasks with dormant state")
+    }
+  }
+
   func tasks(ofType type: String) -> [PersistentTask] {
     return []
   }

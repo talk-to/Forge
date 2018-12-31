@@ -12,6 +12,7 @@ public class Forge {
   public init(with UUID: String) {
     self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
+    self.persistor.markAllTasksReadyToExecute()
     self.executionManager = ExecutionManager()
     self.executionManager.executionDelegate = self.persistor
   }
