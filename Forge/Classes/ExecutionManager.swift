@@ -3,6 +3,7 @@ import Foundation
 import Result
 
 protocol ExecutionDelegate: class {
+  func start(pTask: PersistentTask)
   func delete(pTask: PersistentTask)
   func fail(pTask: PersistentTask, increaseRetryCount: Bool)
 }
@@ -15,6 +16,7 @@ class ExecutionManager {
   func execute(task pTask: PersistentTask) {
     if let executor = executors[pTask.task.id] {
       changeManager?.willStart(task: pTask.task)
+      executionDelegate?.start(pTask: pTask)
       executor.execute(task: pTask.task) { result in
         switch result {
         case .success(_):

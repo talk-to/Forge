@@ -49,6 +49,14 @@ extension Persistor: ExecutionDelegate {
     return CDTask.task(with: pTask.uniqueID, managedObjectContext: context)
   }
 
+  func start(pTask: PersistentTask) {
+    guard let cdTask = cdTask(for: pTask) else {
+      assertionFailure("Didn't find CDTask to start \(pTask)")
+      return
+    }
+    cdTask.state = .executing
+  }
+
   func delete(pTask: PersistentTask) {
     if let cdTask = cdTask(for: pTask) {
       cdTask.managedObjectContext?.delete(cdTask)
@@ -65,6 +73,6 @@ extension Persistor: ExecutionDelegate {
     if increaseRetryCount {
       cdTask.countOfRetries += 1
     }
-    // FIXME: set state
+    cdTask.state = .dormant
   }
 }
