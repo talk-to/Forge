@@ -3,9 +3,10 @@
     <entity name="CDTask" representedClassName="CDTask" syncable="YES" codeGenerationType="class">
         <attribute name="countOfRetries" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="taskCoded" attributeType="String" valueTransformerName="PersistentTaskValueTransformer" customClassName=".PersistenTask" syncable="YES"/>
+        <attribute name="taskState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDTask" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="CDTask" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>
 </model>
