@@ -14,6 +14,10 @@ extension CDTask {
     return "CDTask"
   }
 
+  @nonobjc class func request() -> NSFetchRequest<CDTask> {
+    return NSFetchRequest<CDTask>(entityName: entityName())
+  }
+
   @NSManaged public var uniqueID: String
   @NSManaged public var taskCoded: String
   @NSManaged public var countOfRetries: Int32

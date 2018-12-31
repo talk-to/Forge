@@ -13,7 +13,7 @@ class CDTask: NSManagedObject {
   }
 
   class func task(with id: String, managedObjectContext: NSManagedObjectContext) -> CDTask? {
-    let fetchRequest = NSFetchRequest<CDTask>(entityName: entityName())
+    let fetchRequest = CDTask.request()
     fetchRequest.predicate = NSPredicate(format: "uniqueID == %@", id)
     fetchRequest.fetchLimit = 1
     do {
