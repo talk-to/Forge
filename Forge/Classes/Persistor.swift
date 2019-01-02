@@ -58,6 +58,13 @@ extension Persistor {
   }
 
   func tasks(ofType type: String) -> [PersistentTask] {
+    let request = CDTask.request()
+    request.predicate = NSPredicate(format: "type == %@", type)
+    do {
+      return try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }
+    } catch {
+      assertionFailure("Couldn't get tasks")
+    }
     return []
   }
 }
