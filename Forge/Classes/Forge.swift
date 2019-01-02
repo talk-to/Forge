@@ -1,6 +1,11 @@
 
 import Result
 
+public enum ForgeError: Error {
+  case typeRegisteredAlready
+  case typeNotFound
+}
+
 public class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
@@ -32,8 +37,8 @@ public class Forge {
     executionManager.execute(task: pTask)
   }
 
-  public func register(executor: Executor, for type: String) {
-    executionManager.register(executor: executor, for: type)
+  public func register(executor: Executor, for type: String) throws {
+    try executionManager.register(executor: executor, for: type)
     for pTask in persistor.tasks(ofType: type) {
       executionManager.execute(task: pTask)
     }

@@ -40,7 +40,10 @@ class ExecutionManager {
   }
 
   var executors = [String: Executor]()
-  func register(executor: Executor, for type: String) {
+  func register(executor: Executor, for type: String) throws {
+    if executors[type] != nil {
+      throw ForgeError.typeRegisteredAlready
+    }
     executors[type] = executor
   }
 }
