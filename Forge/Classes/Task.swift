@@ -2,7 +2,6 @@
 import Foundation
 
 public final class Task: Codable {
-
   let id: String
   let type: String
   var params: Dictionary<String, String>? = nil
