@@ -22,6 +22,7 @@ extension CDTask {
   @NSManaged public var taskCoded: String
   @NSManaged public var countOfRetries: Int32
   @NSManaged private var taskState: Int16
+  @NSManaged public var type: String
 
   public var state: TaskState {
     get {
