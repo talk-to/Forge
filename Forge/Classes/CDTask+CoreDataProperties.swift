@@ -20,10 +20,18 @@ extension CDTask {
 
   @NSManaged public var uniqueID: String
   @NSManaged public var taskCoded: String
-  @NSManaged public var countOfRetries: Int32
-  @NSManaged private var taskState: Int16
   @NSManaged public var type: String
 
+  @NSManaged private var countOfRetriesInternal: Int32
+  public var countOfRetries: Int {
+    get {
+      return Int(countOfRetriesInternal)
+    }
+    set {
+      countOfRetriesInternal = Int32(newValue)
+    }
+  }
+  @NSManaged private var taskState: Int16
   public var state: TaskState {
     get {
       return TaskState(rawValue: taskState)!
