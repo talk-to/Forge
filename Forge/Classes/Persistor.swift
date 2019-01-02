@@ -30,6 +30,12 @@ class Persistor {
       print("Core data stack for Forge initialised.")
     }
     context = persistentContainer.newBackgroundContext()
+  deinit {
+    do {
+      try context.save()
+    } catch {
+      assertionFailure(error.localizedDescription)
+    }
   }
 }
 
