@@ -2,7 +2,6 @@
 import CoreData
 
 class Persistor {
-
   static func persistentContainer(UUID: String) -> NSPersistentContainer {
     guard let bundlePath = Bundle(for: Persistor.self).path(forResource: "Forge", ofType: "bundle"), // defined in podspec
       let forgeBundle = Bundle(path: bundlePath),
