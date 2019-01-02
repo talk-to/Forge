@@ -17,7 +17,7 @@ class ExecutionManager {
     if let executor = executors[pTask.task.id] {
       changeManager?.willStart(task: pTask.task)
       executionDelegate?.start(pTask: pTask)
-      executor.execute(task: pTask.task) { result in
+      executor.execute(task: pTask.task, countOfRetries: pTask.countOfRetries) { result in
         switch result {
         case .success(_):
           executionDelegate?.delete(pTask: pTask)
