@@ -46,4 +46,13 @@ class ExecutionManager {
     }
     executors[type] = executor
   }
+
+  /// To be made public only on requirement since this would impact executing tasks,
+  /// retrial logic and tasks persistence.
+  func deregister(executor: Executor, for type: String) throws {
+    if executors[type] == nil {
+      throw ForgeError.typeNotFound
+    }
+    executors.removeValue(forKey: type)
+  }
 }
