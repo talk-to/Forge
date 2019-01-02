@@ -17,6 +17,7 @@ class Persistor {
   let UUID: String
   let persistentContainer: NSPersistentContainer
   let context: NSManagedObjectContext
+  let transformer: PersistentTaskToCDTaskTransformer
 
   init(UUID: String) {
     self.UUID = UUID
@@ -29,6 +30,9 @@ class Persistor {
       print("Core data stack for Forge initialised.")
     }
     context = persistentContainer.newBackgroundContext()
+    transformer = PersistentTaskToCDTaskTransformer(context: context)
+  }
+
   deinit {
     do {
       try context.save()
@@ -40,8 +44,7 @@ class Persistor {
 
 extension Persistor {
   func save(pTask: PersistentTask) {
-    let cdTask = CDTask.insertTask(with: pTask.uniqueID, managedObjectContext: context)
-    cdTask.taskCoded = pTask.task.stringRepresentation()
+    let _ = transformer.from(pTask: pTask)
   }
 
   func markAllTasksReadyToExecute() {
@@ -60,31 +63,18 @@ extension Persistor {
 }
 
 extension Persistor: ExecutionDelegate {
-  private func cdTask(for pTask: PersistentTask) -> CDTask? {
-    return CDTask.task(with: pTask.uniqueID, managedObjectContext: context)
-  }
-
   func start(pTask: PersistentTask) {
-    guard let cdTask = cdTask(for: pTask) else {
-      assertionFailure("Didn't find CDTask to start \(pTask)")
-      return
-    }
-    cdTask.state = .executing
+    transformer.from(pTask: pTask).state = .executing
   }
 
   func delete(pTask: PersistentTask) {
-    if let cdTask = cdTask(for: pTask) {
-      cdTask.managedObjectContext?.delete(cdTask)
-    } else {
-      print("Could not delete task \(pTask)")
-    }
+    let cdTask = transformer.from(pTask: pTask)
+    assert(cdTask.managedObjectContext! == context)
+    context.delete(cdTask)
   }
 
   func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
-    guard let cdTask = cdTask(for: pTask) else {
-      assertionFailure("Didn't find CDTask for \(pTask)")
-      return
-    }
+    let cdTask = transformer.from(pTask: pTask)
     if increaseRetryCount {
       cdTask.countOfRetries += 1
     }
