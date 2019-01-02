@@ -21,7 +21,7 @@ fileprivate struct TaskTransformer {
 struct PersistentTaskToCDTaskTransformer {
   static private let taskTransformer = TaskTransformer()
 
-  let context: NSManagedObjectContext
+  private let context: NSManagedObjectContext
   init(context: NSManagedObjectContext) {
     self.context = context
   }
