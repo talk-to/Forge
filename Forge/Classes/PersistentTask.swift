@@ -11,5 +11,10 @@ struct PersistentTask {
     self.task = task
     self.countOfRetries = 0
   }
-}
 
+  init(uniqueID: String, task: Task, countOfRetries: Int) {
+    self.uniqueID = uniqueID
+    self.task = task
+    self.countOfRetries = countOfRetries
+  }
+}
