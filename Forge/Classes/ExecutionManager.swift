@@ -17,22 +17,26 @@ class ExecutionManager {
     if let executor = executors[pTask.task.id] {
       changeManager?.willStart(task: pTask.task)
       executionDelegate?.start(pTask: pTask)
-      executor.execute(task: pTask.task, countOfRetries: pTask.countOfRetries) { result in
+      executor.execute(task: pTask.task, countOfRetries: pTask.countOfRetries) { [weak self] result in
+        guard let strongSelf = self else {
+          assertionFailure("Execution manager deallocated!")
+          return
+        }
         switch result {
         case .success(_):
-          executionDelegate?.delete(pTask: pTask)
-          changeManager?.didComplete(task: pTask.task, result: result)
+          strongSelf.executionDelegate?.delete(pTask: pTask)
+          strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
         case .failure(let error):
           switch error {
           case .NonRetriable:
-            executionDelegate?.delete(pTask: pTask)
-            changeManager?.didComplete(task: pTask.task, result: result)
+            strongSelf.executionDelegate?.delete(pTask: pTask)
+            strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
           case .ConditionalRetriable:
-            executionDelegate?.fail(pTask: pTask, increaseRetryCount: false)
+            strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: false)
             return
           case .NonConditionalRetriable:
-            executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
-            changeManager?.didComplete(task: pTask.task, result: result) // Possible in only certain cases
+            strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
+            strongSelf.changeManager?.didComplete(task: pTask.task, result: result) // Possible in only certain cases
           }
         }
       }
