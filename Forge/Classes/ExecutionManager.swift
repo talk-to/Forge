@@ -14,7 +14,7 @@ class ExecutionManager {
   weak var changeManager: ChangeManager?
 
   func execute(task pTask: PersistentTask) {
-    guard let executor = executors[pTask.task.id] else {
+    guard let executor = executors[pTask.task.type] else {
       assertionFailure("Trying to execute without registering an executor")
       return
     }
