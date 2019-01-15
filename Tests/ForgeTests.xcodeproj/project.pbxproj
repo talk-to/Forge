@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8BED913E121509D2A84D77A1 /* Pods_ForgeTestsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DD9B4A96256B406DD17E4D /* Pods_ForgeTestsTests.framework */; };
+		8E5AD23621EE3A1400C99847 /* PersistentTaskToCDTaskTransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5AD23521EE3A1400C99847 /* PersistentTaskToCDTaskTransformerTests.swift */; };
 		8EBF507421E4AC5100E6FE58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBF507321E4AC5100E6FE58 /* AppDelegate.swift */; };
 		8EBF508921E4AC5300E6FE58 /* ForgeTestsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBF508821E4AC5300E6FE58 /* ForgeTestsTests.swift */; };
 		8EBF509621E4BEF400E6FE58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EBF509521E4BEF400E6FE58 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 		39DD9B4A96256B406DD17E4D /* Pods_ForgeTestsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForgeTestsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		544C30DD374FCF3719C776D1 /* Pods_ForgeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForgeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641E4361672A2CD2DB51EBE3 /* Pods-ForgeTestsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForgeTestsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForgeTestsTests/Pods-ForgeTestsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8E5AD23521EE3A1400C99847 /* PersistentTaskToCDTaskTransformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentTaskToCDTaskTransformerTests.swift; sourceTree = "<group>"; };
 		8EBF507021E4AC5100E6FE58 /* ForgeTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ForgeTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EBF507321E4AC5100E6FE58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8EBF507F21E4AC5300E6FE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				8EBF508821E4AC5300E6FE58 /* ForgeTestsTests.swift */,
+				8E5AD23521EE3A1400C99847 /* PersistentTaskToCDTaskTransformerTests.swift */,
 				8EBF508A21E4AC5300E6FE58 /* Info.plist */,
 			);
 			path = ForgeTestsTests;
@@ -304,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E5AD23621EE3A1400C99847 /* PersistentTaskToCDTaskTransformerTests.swift in Sources */,
 				8EBF508921E4AC5300E6FE58 /* ForgeTestsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
