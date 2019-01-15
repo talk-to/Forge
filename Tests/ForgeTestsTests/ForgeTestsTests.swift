@@ -27,6 +27,8 @@ class TestExpectation: XCTestExpectation {
 class TestChangeManager: ChangeManager {
   var willStartCalledTimes = 0
   func willStart(task: Task) {
+    let params = try! task.params([String: String].self)
+    XCTAssertEqual(params, ["params": "params"])
     willStartCalledTimes += 1
   }
 
