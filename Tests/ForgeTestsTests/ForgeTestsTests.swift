@@ -56,7 +56,8 @@ class ForgeTestsTests: XCTestCase {
     forge.changeManager = changeManager
     let executor = TestExecutor()
     try! forge.register(executor: executor, for: "t")
-    let task = Task(id: "id", type: "t")
+    let params = ["params": "params"]
+    let task = try! Task(id: "id", type: "t", params: params)
     forge.submit(task: task)
 
     let e1 = TestExpectation(description: "changeManager will start is called")
