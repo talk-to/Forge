@@ -21,6 +21,7 @@ extension CDTask {
   @NSManaged public var uniqueID: String
   @NSManaged public var taskCoded: String
   @NSManaged public var type: String
+  @NSManaged public var retryAt: Date
 
   @NSManaged private var countOfRetriesInternal: Int32
   public var countOfRetries: Int {
