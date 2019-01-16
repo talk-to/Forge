@@ -13,11 +13,7 @@ class ExecutionManager {
   weak var executionDelegate: ExecutionDelegate?
   weak var changeManager: ChangeManager?
 
-  func execute(task pTask: PersistentTask) {
-    guard let executor = executors[pTask.task.type] else {
-      assertionFailure("Trying to execute without registering an executor")
-      return
-    }
+  private func _execute(task pTask: PersistentTask, executor: Executor) {
     changeManager?.willStart(task: pTask.task)
     executionDelegate?.start(pTask: pTask)
     executor.execute(task: pTask.task, countOfRetries: pTask.countOfRetries) { [weak self] result in
@@ -43,6 +39,22 @@ class ExecutionManager {
         }
       }
     }
+  }
+
+  func execute(task pTask: PersistentTask) {
+    guard let executor = executors[pTask.task.type] else {
+      assertionFailure("Trying to execute without registering an executor")
+      return
+    }
+    _execute(task: pTask, executor: executor)
+  }
+
+  /// Just like @p execute, but doesn't assert on executor's presence.
+  func safeExecute(task pTask: PersistentTask) {
+    guard let executor = executors[pTask.task.type] else {
+      return
+    }
+    _execute(task: pTask, executor: executor)
   }
 
   var executors = [String: Executor]()
