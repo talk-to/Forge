@@ -1,6 +1,8 @@
 
 import CoreData
 
+fileprivate let RetryAfter: TimeInterval = 5
+
 class Persistor {
   static func persistentContainer(UUID: String) -> NSPersistentContainer {
     guard let bundlePath = Bundle(for: Persistor.self).path(forResource: "Forge", ofType: "bundle"), // defined in podspec
@@ -97,5 +99,6 @@ extension Persistor: ExecutionDelegate {
       cdTask.countOfRetries += 1
     }
     cdTask.state = .dormant
+    cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
   }
 }
