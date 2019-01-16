@@ -13,6 +13,7 @@ public final class Forge {
   let UUID: String
   let persistor: Persistor
   let executionManager: ExecutionManager
+  let taskRetrier: TaskRetrier
 
   public init(with UUID: String) {
     self.UUID = UUID
@@ -20,6 +21,8 @@ public final class Forge {
     self.persistor.markAllTasksReadyToExecute()
     self.executionManager = ExecutionManager()
     self.executionManager.executionDelegate = self.persistor
+    self.taskRetrier = TaskRetrier(executionManager: self.executionManager, persistor: self.persistor)
+    self.taskRetrier.startRetrialForTasks()
   }
 
   public weak var changeManager: ChangeManager? {
