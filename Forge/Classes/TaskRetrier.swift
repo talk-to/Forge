@@ -32,7 +32,7 @@ class TaskRetrier {
   }
 
   private func executeTasks() {
-    persistor.tasks(ofType: "") // FIXME: Get tasks with elapsed wait time
+    persistor.tasksPending()
       .forEach { pTask in
         executionManager.safeExecute(task: pTask)
     }
