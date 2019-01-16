@@ -39,6 +39,7 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.countOfRetries = 0
     cdTask.state = .unknown
     cdTask.type = pTask.task.type
+    cdTask.retryAt = Date.distantFuture
     return cdTask
   }
 
