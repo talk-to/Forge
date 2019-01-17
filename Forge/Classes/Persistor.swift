@@ -72,7 +72,9 @@ extension Persistor {
 
   func tasksPending() -> [PersistentTask] {
     let request = CDTask.request()
-    request.predicate = NSPredicate(format: "retryAt <= %@", NSDate(timeIntervalSinceNow: 0))
+    request.predicate = NSPredicate(format: "retryAt <= %@ && taskState != %@",
+                                    NSDate(timeIntervalSinceNow: 0),
+                                    TaskState.executing.rawValue)
     do {
       return try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }
     } catch {
