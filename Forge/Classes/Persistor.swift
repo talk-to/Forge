@@ -86,7 +86,9 @@ extension Persistor {
 
 extension Persistor: ExecutionDelegate {
   func start(pTask: PersistentTask) {
-    transformer.from(pTask: pTask).state = .executing
+    let cdTask = transformer.from(pTask: pTask)
+    assert(cdTask.state != .executing)
+    cdTask.state = .executing
   }
 
   func delete(pTask: PersistentTask) {
@@ -100,6 +102,7 @@ extension Persistor: ExecutionDelegate {
     if increaseRetryCount {
       cdTask.countOfRetries += 1
     }
+    assert(cdTask.state == .executing)
     cdTask.state = .dormant
     cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
   }
