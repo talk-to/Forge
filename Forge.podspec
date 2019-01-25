@@ -19,7 +19,7 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'BSD 3-Clause', :file => 'LICENSE' }
   s.author           = { 'Ayush Goel' => 'ayushgoel111@gmail.com' }
-  s.source           = { :git => 'https://github.com/talk-to/Forge.git', :tag => s.version.to_s }
+  s.source           = { :git => 'git@github.com:talk-to/Forge.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
