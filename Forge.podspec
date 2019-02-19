@@ -23,6 +23,7 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
+  s.swift_version = '4.2'
 
   s.source_files = 'Forge/Classes/**/*'
 
