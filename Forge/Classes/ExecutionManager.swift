@@ -35,7 +35,6 @@ class ExecutionManager {
           return
         case .NonConditionalRetriable:
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
-          strongSelf.changeManager?.didComplete(task: pTask.task, result: result) // Possible in only certain cases
         }
       }
     }
