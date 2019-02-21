@@ -47,6 +47,11 @@ class Persistor {
 extension Persistor {
   func save(pTask: PersistentTask) {
     let _ = transformer.from(pTask: pTask)
+    do {
+      try context.save()
+    } catch {
+      assertionFailure("Couldn't perform context.save()")
+    }
   }
 
   func markAllTasksReadyToExecute() {
