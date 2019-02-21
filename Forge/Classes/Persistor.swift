@@ -48,6 +48,7 @@ class Persistor {
 extension Persistor {
   func save(pTask: PersistentTask) {
     let _ = transformer.from(pTask: pTask)
+    self.context.saveNow()
   }
 
   func markAllTasksReadyToExecute() {
