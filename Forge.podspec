@@ -28,7 +28,7 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   s.source_files = 'Forge/Classes/**/*'
 
   s.resource_bundles = {
-    'Forge' => ['Forge/Assets/*.xcdatamodeld']
+    'Forge' => ['Forge/Assets/*.xcdatamodeld', 'Forge/Classes/*.storyboard']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
