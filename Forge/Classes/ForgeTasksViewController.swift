@@ -15,6 +15,7 @@ public class ForgeTasksViewController: UIViewController {
   private var forgeInstances = [Forge]()
   private var forgeTasks = [CDTask]()
   private var fetchedRC = [NSFetchedResultsController<CDTask>]()
+  private var mapFromTaskToInstance = [Int]()
   private var numberOfInstances: Int {
     get {
       return forgeInstances.count
@@ -29,6 +30,8 @@ public class ForgeTasksViewController: UIViewController {
   private func syncForgeTasks(withNextCall: Bool) {
     forgeInstances = ForgeViewer.forgeInstances
     forgeTasks.removeAll()
+    mapFromTaskToInstance.removeAll()
+    fetchedRC.removeAll()
     for index in 0..<numberOfInstances {
       let request = CDTask.request() as NSFetchRequest<CDTask>
       let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
@@ -38,7 +41,10 @@ public class ForgeTasksViewController: UIViewController {
       do {
         try fetchedRC[index].performFetch()
         guard let temp = fetchedRC[index].fetchedObjects else { return }
-        forgeTasks.append(contentsOf: temp)
+        for task in temp {
+          forgeTasks.append(task)
+          mapFromTaskToInstance.append(index)
+        }
       } catch let error as NSError {
         print("Could not fetch. \(error), \(error.userInfo)")
       }
@@ -51,6 +57,13 @@ public class ForgeTasksViewController: UIViewController {
     }
   }
 
+  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    let forgeDetailedTaskVC = segue.destination as! ForgeTaskDetailedViewController
+    guard let pair = sender as? (Forge, String) else { return }
+    forgeDetailedTaskVC.forgeInstance = pair.0
+    forgeDetailedTaskVC.taskUniqueID = pair.1
+  }
+
   @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
     dismiss(animated: true, completion: nil)
   }
@@ -59,7 +72,7 @@ public class ForgeTasksViewController: UIViewController {
 extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
 
   public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 330
+    return 120
   }
 
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,9 +81,15 @@ extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CDTaskCell") as! CDTaskCell
+
     cell.configure(withObj: forgeTasks[indexPath.row])
     return cell
   }
+
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    performSegue(withIdentifier: "forgeTaskSegue", sender: (forgeInstances[mapFromTaskToInstance[indexPath.row]], forgeTasks[indexPath.row].uniqueID))
+  }
+
 }
 
 extension ForgeTasksViewController: NSFetchedResultsControllerDelegate {

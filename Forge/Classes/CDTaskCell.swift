@@ -17,15 +17,6 @@ class CDTaskCell: UITableViewCell {
   @IBOutlet weak var uniqueID: UILabel!
 
   func configure(withObj obj: CDTask) {
-    self.countOfRetriesInternal.text = "countOfRetriesInternal: " + String(obj.countOfRetries)
-    self.countOfRetriesInternal.lineBreakMode = .byWordWrapping
-
-    self.retryAt.text = "retryAt: " + DateFormatter().string(from: obj.retryAt)
-    self.retryAt.lineBreakMode = .byWordWrapping
-
-    self.taskCoded.text = "taskCoded: " + obj.taskCoded
-    self.taskCoded.lineBreakMode = .byWordWrapping
-
     switch obj.state {
     case .dormant: self.taskState.text = "taskState: dormant"
     case .executing: self.taskState.text = "taskState: executing"
