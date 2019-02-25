@@ -1,6 +1,6 @@
 //
 //  CDTaskCell.swift
-//  Alamofire
+//  Forge
 //
 //  Created by aditya.gh on 2/22/19.
 //
@@ -17,27 +17,27 @@ class CDTaskCell: UITableViewCell {
   @IBOutlet weak var uniqueID: UILabel!
 
   func configure(withObj obj: CDTask) {
-    self.countOfRetriesInternal.text = "hi" + String(obj.countOfRetries)
-    self.retryAt.text = "hi" + DateFormatter().string(from: obj.retryAt)
-    self.taskCoded.text = "hi" + obj.taskCoded
-    self.taskState.text = "hi" + obj.description
-    self.type.text = "hi" + obj.type
-    self.uniqueID.text = "hi" + obj.uniqueID
-  }
+    self.countOfRetriesInternal.text = "countOfRetriesInternal: " + String(obj.countOfRetries)
+    self.countOfRetriesInternal.lineBreakMode = .byWordWrapping
 
-}
+    self.retryAt.text = "retryAt: " + DateFormatter().string(from: obj.retryAt)
+    self.retryAt.lineBreakMode = .byWordWrapping
 
-extension TaskState {
-  var description: String {
-    switch self {
-    case .unknown:
-      return "unknown"
-    case .executing:
-      return "executing"
-    case .dormant:
-      return "dormant"
-    default:
-      return "no such case"
+    self.taskCoded.text = "taskCoded: " + obj.taskCoded
+    self.taskCoded.lineBreakMode = .byWordWrapping
+
+    switch obj.state {
+    case .dormant: self.taskState.text = "taskState: dormant"
+    case .executing: self.taskState.text = "taskState: executing"
+    case .unknown: self.taskState.text = "taskState: unknown"
     }
+    self.taskState.lineBreakMode = .byWordWrapping
+
+    self.type.text = "type: " + obj.type
+    self.taskState.lineBreakMode = .byWordWrapping
+
+    self.uniqueID.text = "uniqueID: " + obj.uniqueID
+    self.uniqueID.lineBreakMode = .byWordWrapping
   }
+
 }
