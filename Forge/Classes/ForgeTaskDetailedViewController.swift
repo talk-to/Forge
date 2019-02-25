@@ -10,23 +10,25 @@ import CoreData
 
 class ForgeTaskDetailedViewController: UIViewController {
 
+  @IBOutlet private weak var tableView: UITableView!
   @IBOutlet private weak var countOfRetriesInternal: UILabel!
   @IBOutlet private weak var retryAt: UILabel!
   @IBOutlet private weak var taskCoded: UILabel!
   @IBOutlet private weak var taskState: UILabel!
   @IBOutlet private weak var type: UILabel!
   @IBOutlet private weak var uniqueID: UILabel!
+  private var labels = ["Count of Retries : ", "Retry At : ", "Task Coded : ", "Task State : ", "Type : ", "UniqueID : "]
+  private var labelValues = ["", "", "", "", "", ""]
   var forgeInstance: Forge?
   var taskUniqueID: String?
   private var fetchedRC: NSFetchedResultsController<CDTask>!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    getContext()
+    getCDTask()
   }
 
-  private func getContext() {
-
+  private func getCDTask() {
     guard let forgeInstance = forgeInstance else { return }
     guard let taskUniqueID = taskUniqueID else { return }
     let request = CDTask.request() as NSFetchRequest<CDTask>
@@ -40,47 +42,51 @@ class ForgeTaskDetailedViewController: UIViewController {
       var isTaskCompleted = true
       for task in forgeTasksForThisInstance {
         if task.uniqueID == taskUniqueID {
-          setupView(with: task)
+          setupLabels(with: task)
           isTaskCompleted = false
         }
       }
       if isTaskCompleted {
-        taskState.text = "Task State: Completed"
-        taskState.textColor = UIColor(red: 0.rgb, green: 128.rgb, blue: 0.rgb, alpha: 1.0)
+        labelValues[3] = "completed"
       }
     } catch let error as NSError {
       print("Could not fetch. \(error), \(error.userInfo)")
     }
   }
 
-  private func setupView(with obj: CDTask) {
-    self.countOfRetriesInternal.text = "countOfRetriesInternal: " + String(obj.countOfRetries)
-    self.countOfRetriesInternal.lineBreakMode = .byWordWrapping
-
-    self.retryAt.text = "retryAt: " + DateFormatter().string(from: obj.retryAt)
-    self.retryAt.lineBreakMode = .byWordWrapping
-
-    self.taskCoded.text = "taskCoded: " + obj.taskCoded
-    self.taskCoded.lineBreakMode = .byWordWrapping
-
+  private func setupLabels(with obj: CDTask) {
+    labelValues[0] = String(obj.countOfRetries)
+    labelValues[1] = DateFormatter().string(from: obj.retryAt)
+    labelValues[2] = obj.taskCoded
     switch obj.state {
-    case .dormant: self.taskState.text = "taskState: dormant"
-    case .executing: self.taskState.text = "taskState: executing"
-    case .unknown: self.taskState.text = "taskState: unknown"
+    case .dormant: labelValues[3] = "dormant"
+    case .executing: labelValues[3] = "executing"
+    case .unknown: labelValues[3] = "unknown"
     }
-    self.taskState.lineBreakMode = .byWordWrapping
-
-    self.type.text = "type: " + obj.type
-    self.taskState.lineBreakMode = .byWordWrapping
-
-    self.uniqueID.text = "uniqueID: " + obj.uniqueID
-    self.uniqueID.lineBreakMode = .byWordWrapping
+    labelValues[4] = obj.type
+    labelValues[5] = obj.uniqueID
   }
+  
+}
+
+extension ForgeTaskDetailedViewController: UITableViewDelegate, UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 6
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "CDTaskDetailedCell") as! CDTaskDetailedCell
+    cell.configure(with: labels[indexPath.row] + labelValues[indexPath.row])
+    return cell
+  }
+
   
 }
 
 extension ForgeTaskDetailedViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    getContext()
+    getCDTask()
+    tableView.reloadData()
   }
 }
+
