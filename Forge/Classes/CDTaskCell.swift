@@ -13,7 +13,7 @@ class CDTaskCell: UITableViewCell {
   @IBOutlet private weak var type: UILabel!
   @IBOutlet private weak var uniqueID: UILabel!
   @IBOutlet private weak var retryCount: UILabel!
-//  @IBOutlet private weak var retryAt: UILabel!
+  @IBOutlet private weak var retryAt: UILabel!
 
   func configure(withObj obj: CDTask) {
     switch obj.state {
@@ -38,8 +38,8 @@ class CDTaskCell: UITableViewCell {
     self.retryCount.text = NSLocalizedString(String(obj.countOfRetries), comment: String(obj.countOfRetries))
     self.retryCount.lineBreakMode = .byCharWrapping
 
-//    self.retryAt.text = DateFormatter().string(from: obj.retryAt)
-//    self.retryAt.lineBreakMode = .byWordWrapping
+    self.retryAt.text = DateFormatter().string(from: obj.retryAt)
+    self.retryAt.lineBreakMode = .byWordWrapping
   }
 
 }

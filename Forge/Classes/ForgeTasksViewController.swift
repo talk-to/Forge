@@ -72,7 +72,7 @@ public class ForgeTasksViewController: UIViewController {
 extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
 
   public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 150
+    return 170
   }
 
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
