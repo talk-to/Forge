@@ -12,8 +12,8 @@ class CDTaskDetailedCell: UITableViewCell {
   @IBOutlet private weak var label: UILabel!
 
   func configure(with text: String) {
-    label.text = text
-    label.lineBreakMode = .byWordWrapping
+    label.text = NSLocalizedString(text, comment: text)
+    label.lineBreakMode = .byCharWrapping
     label.numberOfLines = 8
   }
 }
