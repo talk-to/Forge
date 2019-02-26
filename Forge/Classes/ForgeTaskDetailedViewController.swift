@@ -17,8 +17,8 @@ class ForgeTaskDetailedViewController: UIViewController {
   @IBOutlet private weak var taskState: UILabel!
   @IBOutlet private weak var type: UILabel!
   @IBOutlet private weak var uniqueID: UILabel!
-  private var labels = ["Count of Retries : ", "Retry At : ", "Task Coded : ", "Task State : ", "Type : ", "UniqueID : "]
-  private var labelValues = ["", "", "", "", "", ""]
+  private var labels = ["Count of Retries : ", "Retry At : ", "Task Coded : ", "Task State : ", "Type : ", "UniqueID : ", "Undo after : "]
+  private var labelValues = ["", "", "", "", "", "", ""]
   var forgeInstance: Forge?
   var taskUniqueID: String?
   private var fetchedRC: NSFetchedResultsController<CDTask>!
@@ -65,13 +65,14 @@ class ForgeTaskDetailedViewController: UIViewController {
     }
     labelValues[4] = obj.type
     labelValues[5] = obj.uniqueID
+    labelValues[6] = String(obj.undoTime)
   }
   
 }
 
 extension ForgeTaskDetailedViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 6
+    return 7
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

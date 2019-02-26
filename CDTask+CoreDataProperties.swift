@@ -1,3 +1,10 @@
+//
+//  CDTask+CoreDataProperties.swift
+//  
+//
+//  Created by aditya.gh on 2/26/19.
+//
+//
 
 import Foundation
 import CoreData
@@ -8,7 +15,9 @@ public enum TaskState: Int16 {
   case dormant
 }
 
+
 extension CDTask {
+
 
   class func entityName () -> String {
     return "CDTask"
@@ -18,11 +27,12 @@ extension CDTask {
     return NSFetchRequest<CDTask>(entityName: entityName())
   }
 
-  @NSManaged public var uniqueID: String
-  @NSManaged public var taskCoded: String
-  @NSManaged public var type: String
-  @NSManaged public var retryAt: Date
-  @NSManaged public var undoTime: Int32
+  @NSManaged public var retryAt: NSDate?
+  @NSManaged public var taskCoded: String?
+  @NSManaged public var taskState: Int16
+  @NSManaged public var type: String?
+  @NSManaged public var uniqueID: String?
+
 
   @NSManaged private var countOfRetriesInternal: Int32
   public var countOfRetries: Int {
@@ -33,7 +43,7 @@ extension CDTask {
       countOfRetriesInternal = Int32(newValue)
     }
   }
-  @NSManaged private var taskState: Int16
+
   public var state: TaskState {
     get {
       return TaskState(rawValue: taskState)!
