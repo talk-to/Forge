@@ -8,7 +8,7 @@ struct PersistentTask {
   let undoTime: Int
 
   init(task: Task, _undoTime: Int) {
-    uniqueID = UUID().uuidString
+    uniqueID = task.id
     self.task = task
     self.countOfRetries = 0
     self.undoTime = _undoTime
