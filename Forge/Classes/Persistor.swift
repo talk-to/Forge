@@ -85,6 +85,21 @@ extension Persistor {
     }
     return []
   }
+
+  func revert(id: String) {
+    let request = CDTask.request()
+    let tasks: [CDTask]
+    request.predicate = NSPredicate(format: "uniqueId == %@", id)
+    do {
+      tasks = try context.fetch(request)
+      if !tasks.isEmpty {
+        context.delete(tasks[0])
+        context.saveNow()
+      }
+    } catch {
+      assertionFailure("Couldn't get tasks")
+    }
+  }
 }
 
 extension Persistor: ExecutionDelegate {

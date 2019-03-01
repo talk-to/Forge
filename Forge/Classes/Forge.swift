@@ -48,4 +48,8 @@ public final class Forge {
       executionManager.execute(task: pTask)
     }
   }
+
+  public func undoTask(id: String) {
+    persistor.revert(id: id)
+  }
 }
