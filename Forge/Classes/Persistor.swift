@@ -20,6 +20,7 @@ class Persistor {
   let UUID: String
   let persistentContainer: NSPersistentContainer
   let context: NSManagedObjectContext
+  let mainContext : NSManagedObjectContext
   let transformer: PersistentTaskToCDTaskTransformer
 
   init(UUID: String) {
@@ -33,6 +34,8 @@ class Persistor {
       print("Core data stack for Forge initialised.")
     }
     context = persistentContainer.newBackgroundContext()
+    mainContext = persistentContainer.viewContext
+    mainContext.automaticallyMergesChangesFromParent = true
     transformer = PersistentTaskToCDTaskTransformer(context: context)
   }
 
@@ -107,12 +110,14 @@ extension Persistor: ExecutionDelegate {
     let cdTask = transformer.from(pTask: pTask)
     assert(cdTask.state != .executing)
     cdTask.state = .executing
+    context.saveNow()
   }
 
   func delete(pTask: PersistentTask) {
     let cdTask = transformer.from(pTask: pTask)
     assert(cdTask.managedObjectContext! == context)
     context.delete(cdTask)
+    context.saveNow()
   }
 
   func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
@@ -123,5 +128,6 @@ extension Persistor: ExecutionDelegate {
     assert(cdTask.state == .executing)
     cdTask.state = .dormant
     cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
+    context.saveNow()
   }
 }

@@ -25,29 +25,29 @@ class ForgeTaskDetailedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupNFRC()
     getCDTask()
   }
 
-  private func getCDTask() {
+  private func setupNFRC() {
     guard let forgeInstance = forgeInstance else { return }
     guard let taskUniqueID = taskUniqueID else { return }
     let request = CDTask.request() as NSFetchRequest<CDTask>
+    request.predicate = NSPredicate(format: "uniqueID == %@", taskUniqueID)
     let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
     request.sortDescriptors = [sort]
     fetchedRC = NSFetchedResultsController(fetchRequest: request, managedObjectContext: forgeInstance.persistor.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedRC.delegate = self as? NSFetchedResultsControllerDelegate
+  }
+
+  private func getCDTask() {
     do {
       try fetchedRC.performFetch()
       guard let forgeTasksForThisInstance = fetchedRC.fetchedObjects else { return }
-      var isTaskCompleted = true
-      for task in forgeTasksForThisInstance {
-        if task.uniqueID == taskUniqueID {
-          setupLabels(with: task)
-          isTaskCompleted = false
-        }
-      }
-      if isTaskCompleted {
+      if forgeTasksForThisInstance.isEmpty {
         labelValues[3] = "completed"
+      } else {
+        setupLabels(with: forgeTasksForThisInstance[0])
       }
     } catch let error as NSError {
       print("Could not fetch. \(error), \(error.userInfo)")

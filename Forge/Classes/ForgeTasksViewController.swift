@@ -12,48 +12,49 @@ public class ForgeTasksViewController: UIViewController {
 
   @IBOutlet private weak var tableView: UITableView!
   private var refreshInstancesTime: Double = 5.0
-  private var forgeInstances = [Forge]()
-  private var forgeTasks = [CDTask]()
-  private var fetchedRC = [NSFetchedResultsController<CDTask>]()
-  private var mapFromTaskToInstance = [Int]()
-  private var numberOfInstances: Int {
-    get {
-      return forgeInstances.count
-    }
-  }
+  private var tuple = [(forge: Forge, nfrc: NSFetchedResultsController<CDTask>)]()
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    syncForgeTasks(withNextCall: true)
+    fetchAndReloadTable()
+    Timer.scheduledTimer(withTimeInterval: TimeInterval(3), repeats: true) { [weak self] t in
+      guard let strongSelf = self else { return }
+      strongSelf.fetchAndReloadTable()
+    }
   }
 
-  private func syncForgeTasks(withNextCall: Bool) {
-    forgeInstances = ForgeViewer.forgeInstances
-    forgeTasks.removeAll()
-    mapFromTaskToInstance.removeAll()
-    fetchedRC.removeAll()
-    for index in 0..<numberOfInstances {
-      let request = CDTask.request() as NSFetchRequest<CDTask>
-      let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
-      request.sortDescriptors = [sort]
-      fetchedRC.append(NSFetchedResultsController(fetchRequest: request, managedObjectContext: forgeInstances[index].persistor.context, sectionNameKeyPath: nil, cacheName: nil))
-      fetchedRC[index].delegate = self
-      do {
-        try fetchedRC[index].performFetch()
-        guard let temp = fetchedRC[index].fetchedObjects else { return }
-        for task in temp {
-          forgeTasks.append(task)
-          mapFromTaskToInstance.append(index)
+  private func fetchAndReloadTable() {
+    syncForgeInstances()
+    tableView.reloadData()
+  }
+
+  // Adds new forgeInstances, creates their NFRC and their tasks
+  // Assumption: Forge objects are never removed
+  private func syncForgeInstances() {
+    if tuple.count != ForgeViewer.forgeInstances.count {
+      let len = tuple.count
+      for index in len..<ForgeViewer.forgeInstances.count {
+        let newInstance = ForgeViewer.forgeInstances[index]
+        let request = CDTask.request() as NSFetchRequest<CDTask>
+        let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
+        request.sortDescriptors = [sort]
+        let nfrc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: newInstance.persistor.mainContext, sectionNameKeyPath: nil, cacheName: nil)
+        nfrc.delegate = self
+        tuple.append((newInstance, nfrc))
+        do {
+          try tuple[index].nfrc.performFetch()
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
         }
-      } catch let error as NSError {
-        print("Could not fetch. \(error), \(error.userInfo)")
       }
     }
-    if withNextCall {
-      DispatchQueue.main.asyncAfter(deadline: .now() + refreshInstancesTime) { [weak self] in
-        guard let self = self else { return }
-        self.syncForgeTasks(withNextCall: true)
-      }
+  }
+
+  private func syncParticularForgeInstanceAt(index: Int) {
+    do {
+      try tuple[index].nfrc.performFetch()
+    } catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
     }
   }
 
@@ -75,19 +76,22 @@ extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     return 170
   }
 
+  public func numberOfSections(in tableView: UITableView) -> Int {
+    return tuple.count
+  }
+
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return forgeTasks.count
+    return tuple[section].nfrc.fetchedObjects?.count ?? 0
   }
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CDTaskCell") as! CDTaskCell
-
-    cell.configure(withObj: forgeTasks[indexPath.row])
+    cell.configure(withObj: (tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row]))
     return cell
   }
 
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    performSegue(withIdentifier: "forgeTaskSegue", sender: (forgeInstances[mapFromTaskToInstance[indexPath.row]], forgeTasks[indexPath.row].uniqueID))
+    performSegue(withIdentifier: "forgeTaskSegue", sender: (tuple[indexPath.section].forge, tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row].uniqueID))
   }
 
 }
@@ -95,7 +99,12 @@ extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
 extension ForgeTasksViewController: NSFetchedResultsControllerDelegate {
 
   public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    syncForgeTasks(withNextCall: false)
-    tableView.reloadData()
+    for index in 0..<tuple.count {
+      if controller == tuple[index].nfrc {
+        syncParticularForgeInstanceAt(index: index)
+        tableView.reloadData()
+        break
+      }
+    }
   }
 }
