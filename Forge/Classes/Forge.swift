@@ -36,8 +36,8 @@ public final class Forge {
     }
   }
 
-  public func submit(task: Task, undoTime: Int) {
-    let pTask = PersistentTask(task: task, _undoTime: undoTime)
+  public func submit(task: Task, initialDelay: Int) {
+    let pTask = PersistentTask(task: task, initialDelay: initialDelay)
     persistor.save(pTask: pTask)
     executionManager.changeManager?.willStart(task: pTask.task)
   }

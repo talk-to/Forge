@@ -22,7 +22,7 @@ extension CDTask {
   @NSManaged public var taskCoded: String
   @NSManaged public var type: String
   @NSManaged public var retryAt: Date
-  @NSManaged public var undoTime: Int32
+  @NSManaged public var initialDelay: Int32
 
   @NSManaged private var countOfRetriesInternal: Int32
   public var countOfRetries: Int {
