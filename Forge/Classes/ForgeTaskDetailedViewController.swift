@@ -17,7 +17,13 @@ class ForgeTaskDetailedViewController: UIViewController {
   @IBOutlet private weak var taskState: UILabel!
   @IBOutlet private weak var type: UILabel!
   @IBOutlet private weak var uniqueID: UILabel!
-  private var labels = ["Count of Retries : ", "Retry At : ", "Task Coded : ", "Task State : ", "Type : ", "UniqueID : ", "Undo after : "]
+  private var labels = [NSLocalizedString("Count of Retries : ", comment: "number of retries done"),
+                        NSLocalizedString("Retry At : ", comment: "next retry time"),
+                        NSLocalizedString("Task Coded : ", comment: "task in coded form"),
+                        NSLocalizedString("Task State : ", comment: "current task state"),
+                        NSLocalizedString("Type : ", comment: "task type"),
+                        NSLocalizedString("UniqueID : ", comment: "unique id of task"),
+                        NSLocalizedString("Undo after : ", comment: "time till which undo can be done")]
   private var labelValues = ["", "", "", "", "", "", ""]
   var forgeInstance: Forge?
   var taskUniqueID: String?

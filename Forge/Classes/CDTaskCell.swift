@@ -29,13 +29,13 @@ class CDTaskCell: UITableViewCell {
     }
     self.taskState.lineBreakMode = .byCharWrapping
 
-    self.type.text = NSLocalizedString(obj.type, comment: obj.type)
+    self.type.text = obj.type
     self.taskState.lineBreakMode = .byCharWrapping
 
-    self.uniqueID.text = NSLocalizedString(obj.uniqueID, comment: obj.uniqueID)
+    self.uniqueID.text = obj.uniqueID
     self.uniqueID.lineBreakMode = .byCharWrapping
 
-    self.retryCount.text = NSLocalizedString(String(obj.countOfRetries), comment: String(obj.countOfRetries))
+    self.retryCount.text = String(obj.countOfRetries)
     self.retryCount.lineBreakMode = .byCharWrapping
 
     self.retryAt.text = DateFormatter().string(from: obj.retryAt)
