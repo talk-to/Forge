@@ -49,9 +49,9 @@ public final class Forge {
     }
   }
 
-  public func deleteTask(id: String) {
-    guard let pTask = persistor.task(withID: id) else { return }
-    executionManager.changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.NonRetriable))
+  public func undoTask(id: String) {
+    guard let pTask = persistor.undoableTask(withID: id) else { return }
+    executionManager.changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
     persistor.delete(id: id)
   }
 }

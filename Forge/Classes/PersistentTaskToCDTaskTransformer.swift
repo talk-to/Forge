@@ -40,6 +40,7 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.state = .unknown
     cdTask.type = pTask.task.type
     cdTask.retryAt = Date.init(timeInterval: Double(pTask.initialDelay), since: Date())
+    cdTask.submittedAt = Date()
     cdTask.initialDelay = Int32(pTask.initialDelay)
     return cdTask
   }

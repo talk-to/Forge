@@ -75,11 +75,17 @@ extension Persistor {
     return []
   }
 
-  func task(withID id: String) -> PersistentTask? {
+  func undoableTask(withID id: String) -> PersistentTask? {
     let request = CDTask.request()
     request.predicate = NSPredicate(format: "uniqueID == %@", id)
     do {
-      return try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }.first
+      guard let cdTask = try context.fetch(request).first else { return nil }
+      let submittedAt = cdTask.submittedAt
+      let initialDelay = cdTask.initialDelay
+      let undoUpto = Date(timeInterval: Double(initialDelay), since: submittedAt)
+      if undoUpto < Date() {
+        return transformer.reverseFrom(cdTask: cdTask)
+      }
     } catch {
       assertionFailure("Couldn't get tasks")
     }

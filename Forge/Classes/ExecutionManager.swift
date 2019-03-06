@@ -35,6 +35,8 @@ class ExecutionManager {
           return
         case .NonConditionalRetriable:
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
+        case .Cancelled:
+          return
         }
       }
     }
