@@ -75,6 +75,22 @@ extension Persistor {
     return []
   }
 
+  func singleTask(withID id: String) -> PersistentTask? {
+    let request = CDTask.request()
+    request.predicate = NSPredicate(format: "uniqueID == %@", id)
+    do {
+      let pTasks = try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }
+      if pTasks.isEmpty {
+        return nil
+      } else {
+        return pTasks[0]
+      }
+    } catch {
+      assertionFailure("Couldn't get tasks")
+    }
+    return nil
+  }
+
   func tasksPending() -> [PersistentTask] {
     let request = CDTask.request()
     request.predicate
@@ -92,7 +108,7 @@ extension Persistor {
   func revert(id: String) {
     let request = CDTask.request()
     let tasks: [CDTask]
-    request.predicate = NSPredicate(format: "uniqueId == %@", id)
+    request.predicate = NSPredicate(format: "uniqueID == %@", id)
     do {
       tasks = try context.fetch(request)
       if !tasks.isEmpty {

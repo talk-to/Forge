@@ -40,6 +40,14 @@ class ExecutionManager {
     }
   }
 
+  func tellChangeManagerToStart(task pTask: PersistentTask) {
+    changeManager?.willStart(task: pTask.task)
+  }
+
+  func tellChangeManagerToCompleteWithFailure(task pTask: PersistentTask) {
+    changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.NonRetriable))
+  }
+
   func execute(task pTask: PersistentTask) {
     guard let executor = executors[pTask.task.type] else {
       assertionFailure("Trying to execute without registering an executor")
