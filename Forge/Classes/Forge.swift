@@ -24,7 +24,6 @@ public final class Forge {
     self.taskRetrier = TaskRetrier(executionManager: self.executionManager, persistor: self.persistor)
     self.taskRetrier.startRetrialForTasks()
     ForgeViewer.addToInstances(anObject: self)
-    print("FORGEOBJECT: ", UUID)
   }
 
   public weak var changeManager: ChangeManager? {

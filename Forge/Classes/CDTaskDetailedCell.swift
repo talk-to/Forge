@@ -13,7 +13,6 @@ class CDTaskDetailedCell: UITableViewCell {
 
   func configure(with text: String) {
     label.text = text
-    label.lineBreakMode = .byCharWrapping
     label.numberOfLines = 8
   }
 }

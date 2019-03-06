@@ -27,19 +27,10 @@ class CDTaskCell: UITableViewCell {
       self.taskState.text = NSLocalizedString("Unknown", comment: "Unknown")
       self.taskState.backgroundColor = UIColor(red: 255.rgb, green: 202.rgb, blue: 40.rgb, alpha: 1.0)
     }
-    self.taskState.lineBreakMode = .byCharWrapping
-
     self.type.text = obj.type
-    self.taskState.lineBreakMode = .byCharWrapping
-
     self.uniqueID.text = obj.uniqueID
-    self.uniqueID.lineBreakMode = .byCharWrapping
-
     self.retryCount.text = String(obj.countOfRetries)
-    self.retryCount.lineBreakMode = .byCharWrapping
-
     self.retryAt.text = DateFormatter().string(from: obj.retryAt)
-    self.retryAt.lineBreakMode = .byWordWrapping
   }
 
 }
