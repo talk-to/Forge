@@ -75,7 +75,7 @@ extension Persistor {
     return []
   }
 
-  func singleTask(withID id: String) -> PersistentTask? {
+  func task(withID id: String) -> PersistentTask? {
     let request = CDTask.request()
     request.predicate = NSPredicate(format: "uniqueID == %@", id)
     do {
@@ -105,7 +105,7 @@ extension Persistor {
     return []
   }
 
-  func revert(id: String) {
+  func delete(id: String) {
     let request = CDTask.request()
     let tasks: [CDTask]
     request.predicate = NSPredicate(format: "uniqueID == %@", id)

@@ -23,7 +23,7 @@ class ForgeTaskDetailedViewController: UIViewController {
                         NSLocalizedString("Task State : ", comment: "current task state"),
                         NSLocalizedString("Type : ", comment: "task type"),
                         NSLocalizedString("UniqueID : ", comment: "unique id of task"),
-                        NSLocalizedString("Undo after : ", comment: "time till which undo can be done")]
+                        NSLocalizedString("Delete till : ", comment: "time till which task can be deleted")]
   private var labelValues = ["", "", "", "", "", "", ""]
   var forgeInstance: Forge?
   var taskUniqueID: String?
