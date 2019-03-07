@@ -35,9 +35,9 @@ public final class Forge {
     }
   }
 
-  public func submit(task: Task, afterDelay delay: Int? = nil) -> String {
+  public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
     let taskID = UUID().uuidString
-    let pTask = PersistentTask(task: task, afterDelay: delay ?? 0, taskID: taskID)
+    let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
     executionManager.execute(task: pTask, delay: delay)
     return taskID

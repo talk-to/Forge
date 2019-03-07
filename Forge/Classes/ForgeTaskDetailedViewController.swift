@@ -62,7 +62,10 @@ class ForgeTaskDetailedViewController: UIViewController {
 
   private func setupLabels(with obj: CDTask) {
     labelValues[0] = String(obj.countOfRetries)
-    labelValues[1] = DateFormatter().string(from: obj.retryAt)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .none
+    dateFormatter.timeStyle = .medium
+    labelValues[1] = dateFormatter.string(from: obj.retryAt)
     labelValues[2] = obj.taskCoded
     switch obj.state {
     case .dormant: labelValues[3] = "dormant"

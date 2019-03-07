@@ -31,6 +31,10 @@ class CDTaskCell: UITableViewCell {
     self.uniqueID.text = obj.uniqueID
     self.retryCount.text = String(obj.countOfRetries)
     self.retryAt.text = DateFormatter().string(from: obj.retryAt)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .none
+    dateFormatter.timeStyle = .medium
+    self.retryAt.text = dateFormatter.string(from: obj.retryAt)
   }
 
 }
