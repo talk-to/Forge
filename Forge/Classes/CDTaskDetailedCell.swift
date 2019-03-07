@@ -13,6 +13,5 @@ class CDTaskDetailedCell: UITableViewCell {
 
   func configure(with text: String) {
     label.text = text
-    label.numberOfLines = 8
   }
 }
