@@ -10,13 +10,13 @@ public final class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
   /// same persistence layer.
-  let UUID: String
+  let id: String
   let persistor: Persistor
   let executionManager: ExecutionManager
   let taskRetrier: TaskRetrier
 
   public init(with UUID: String) {
-    self.UUID = UUID
+    self.id = UUID
     self.persistor = Persistor(UUID: UUID)
     self.persistor.markAllTasksReadyToExecute()
     self.executionManager = ExecutionManager()
