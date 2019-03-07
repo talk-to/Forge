@@ -81,8 +81,8 @@ extension Persistor {
     do {
       guard let cdTask = try context.fetch(request).first else { return nil }
       let submittedAt = cdTask.submittedAt
-      let initialDelay = cdTask.initialDelay
-      let undoUpto = Date(timeInterval: Double(initialDelay), since: submittedAt)
+      let delay = cdTask.delay
+      let undoUpto = Date(timeInterval: Double(delay), since: submittedAt)
       let currentDate = Date()
       if undoUpto > currentDate {
         return transformer.reverseFrom(cdTask: cdTask)

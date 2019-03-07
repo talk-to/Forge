@@ -71,7 +71,7 @@ class ForgeTaskDetailedViewController: UIViewController {
     }
     labelValues[4] = obj.type
     labelValues[5] = obj.uniqueID
-    labelValues[6] = String(obj.initialDelay)
+    labelValues[6] = String(obj.delay)
   }
   
 }

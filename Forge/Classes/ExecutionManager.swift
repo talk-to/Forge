@@ -42,12 +42,12 @@ class ExecutionManager {
     }
   }
 
-  func execute(task pTask: PersistentTask, initialDelay: Int? = nil) {
+  func execute(task pTask: PersistentTask, delay: Int? = nil) {
     guard let executor = executors[pTask.task.type] else {
       assertionFailure("Trying to execute without registering an executor")
       return
     }
-    if let delay = initialDelay {
+    if let delay = delay {
       changeManager?.willStart(task: pTask.task)
     } else {
       _execute(task: pTask, executor: executor)

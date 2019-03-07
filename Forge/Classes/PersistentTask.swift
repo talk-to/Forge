@@ -5,19 +5,19 @@ struct PersistentTask {
   let uniqueID: String
   let countOfRetries: Int
   let task: Task
-  let initialDelay: Int
+  let delay: Int
 
-  init(task: Task, initialDelay: Int, taskID: String) {
+  init(task: Task, afterDelay delay: Int, taskID: String) {
     self.uniqueID = taskID
     self.task = task
     self.countOfRetries = 0
-    self.initialDelay = initialDelay
+    self.delay = delay
   }
 
-  init(uniqueID: String, task: Task, countOfRetries: Int, initialDelay: Int) {
+  init(uniqueID: String, task: Task, countOfRetries: Int, delay: Int) {
     self.uniqueID = uniqueID
     self.task = task
     self.countOfRetries = countOfRetries
-    self.initialDelay = initialDelay
+    self.delay = delay
   }
 }
