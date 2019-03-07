@@ -7,8 +7,8 @@ struct PersistentTask {
   let task: Task
   let initialDelay: Int
 
-  init(task: Task, initialDelay: Int) {
-    uniqueID = task.id
+  init(task: Task, initialDelay: Int, taskID: String) {
+    self.uniqueID = taskID
     self.task = task
     self.countOfRetries = 0
     self.initialDelay = initialDelay

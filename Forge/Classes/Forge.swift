@@ -35,10 +35,12 @@ public final class Forge {
     }
   }
 
-  public func submit(task: Task, initialDelay: Int) {
-    let pTask = PersistentTask(task: task, initialDelay: initialDelay)
+  public func submit(task: Task, initialDelay: Int? = nil) -> String {
+    let taskID = UUID().uuidString
+    let pTask = PersistentTask(task: task, initialDelay: initialDelay ?? 0, taskID: taskID)
     persistor.save(pTask: pTask)
-    executionManager.changeManager?.willStart(task: pTask.task)
+    executionManager.execute(task: pTask, initialDelay: initialDelay)
+    return taskID
   }
 
   public func register(executor: Executor, for type: String) throws {
@@ -50,7 +52,7 @@ public final class Forge {
 
   public func undoTask(id: String) {
     guard let pTask = persistor.undoableTask(withID: id) else { return }
-    executionManager.changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
+    executionManager.undoChangeManagerAction(pTask: pTask)
     persistor.delete(id: id)
   }
 }

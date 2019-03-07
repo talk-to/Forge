@@ -96,4 +96,3 @@ extension ForgeTaskDetailedViewController: NSFetchedResultsControllerDelegate {
     tableView.reloadData()
   }
 }
-
