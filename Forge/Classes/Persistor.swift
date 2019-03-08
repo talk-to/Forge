@@ -109,6 +109,7 @@ extension Persistor {
         = NSPredicate(format: "(retryAt <= %@) AND (taskState != %@)",
                       argumentArray: [NSDate(timeIntervalSinceNow: 0),
                                       NSNumber(value: TaskState.executing.rawValue)])
+      request.sortDescriptors = [NSSortDescriptor(key: "submittedAt", ascending: true)]
       do {
         let pTasks = try self.context.fetch(request).map { self.transformer.reverseFrom(cdTask: $0) }
         completionBlockHandler(pTasks)
