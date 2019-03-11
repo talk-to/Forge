@@ -23,79 +23,78 @@ class ForgeTaskDetailedViewController: UIViewController {
                         NSLocalizedString("Task State : ", comment: "current task state"),
                         NSLocalizedString("Type : ", comment: "task type"),
                         NSLocalizedString("UniqueID : ", comment: "unique id of task"),
-                        NSLocalizedString("Delete till : ", comment: "time till which task can be deleted")]
-  private var labelValues = ["", "", "", "", "", "", ""]
-  var forgeInstance: Forge?
-  var taskUniqueID: String?
-  private var fetchedRC: NSFetchedResultsController<CDTask>!
+                        NSLocalizedString("Submitted at : ", comment: "time when task was submitted"),
+                        NSLocalizedString("Delay : ", comment: "initial delay in seconds")]
+  private var labelValues = ["", "", "", "", "", "", "", ""]
+  var task: CDTask!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupNFRC()
-    getCDTask()
+    setLabels(task: task)
+    tableView.reloadData()
+    notificationObserving()
   }
 
-  private func setupNFRC() {
-    guard let forgeInstance = forgeInstance else { return }
-    guard let taskUniqueID = taskUniqueID else { return }
-    let request = CDTask.request() as NSFetchRequest<CDTask>
-    request.predicate = NSPredicate(format: "uniqueID == %@", taskUniqueID)
-    let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
-    request.sortDescriptors = [sort]
-    fetchedRC = NSFetchedResultsController(fetchRequest: request, managedObjectContext: forgeInstance.persistor.context, sectionNameKeyPath: nil, cacheName: nil)
-    fetchedRC.delegate = self as? NSFetchedResultsControllerDelegate
+  private func notificationObserving() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: task.managedObjectContext)
   }
 
-  private func getCDTask() {
-    do {
-      try fetchedRC.performFetch()
-      guard let forgeTasksForThisInstance = fetchedRC.fetchedObjects else { return }
-      if forgeTasksForThisInstance.isEmpty {
-        labelValues[3] = "completed"
-      } else {
-        setupLabels(with: forgeTasksForThisInstance[0])
+  @objc private func managedObjectContextObjectsDidChange(notification: Notification) {
+    guard let userInfo = notification.userInfo else { return }
+    if let refresh = userInfo[NSRefreshedObjectsKey] as? Set<CDTask>, refresh.count > 0 {
+      for refreshTask in refresh {
+        if task.uniqueID == refreshTask.uniqueID {
+          setLabels(task: refreshTask)
+          tableView.reloadData()
+        }
       }
-    } catch let error as NSError {
-      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    if let updates = userInfo[NSUpdatedObjectsKey] as? Set<CDTask>, updates.count > 0 {
+      for updatedTask in updates {
+        if task.uniqueID == updatedTask.uniqueID {
+          setLabels(task: updatedTask)
+          tableView.reloadData()
+        }
+      }
+    }
+    if let deletes = userInfo[NSDeletedObjectsKey] as? Set<CDTask>, deletes.count > 0 {
+      for deletedTask in deletes {
+        if task.uniqueID == deletedTask.uniqueID {
+          labelValues[3] = "completed"
+          tableView.reloadData()
+        }
+      }
     }
   }
 
-  private func setupLabels(with obj: CDTask) {
-    labelValues[0] = String(obj.countOfRetries)
+  private func setLabels(task: CDTask) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .none
     dateFormatter.timeStyle = .medium
-    labelValues[1] = dateFormatter.string(from: obj.retryAt)
-    labelValues[2] = obj.taskCoded
-    switch obj.state {
+    labelValues[0] = String(task.countOfRetries)
+    labelValues[1] = dateFormatter.string(from: task.retryAt)
+    labelValues[2] = task.taskCoded
+    switch task.state {
     case .dormant: labelValues[3] = "dormant"
     case .executing: labelValues[3] = "executing"
     case .unknown: labelValues[3] = "unknown"
     }
-    labelValues[4] = obj.type
-    labelValues[5] = obj.uniqueID
-    labelValues[6] = String(obj.delay)
+    labelValues[4] = task.type
+    labelValues[5] = task.uniqueID
+    labelValues[6] = dateFormatter.string(from: task.submittedAt)
+    labelValues[7] = String(task.delay)
   }
-  
 }
 
 extension ForgeTaskDetailedViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 7
+    return labels.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CDTaskDetailedCell") as! CDTaskDetailedCell
     cell.configure(with: labels[indexPath.row] + labelValues[indexPath.row])
     return cell
-  }
-
-  
-}
-
-extension ForgeTaskDetailedViewController: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    getCDTask()
-    tableView.reloadData()
   }
 }

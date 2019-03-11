@@ -60,9 +60,7 @@ public class ForgeTasksViewController: UIViewController {
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let forgeDetailedTaskVC = segue.destination as! ForgeTaskDetailedViewController
-    guard let pair = sender as? (Forge, String) else { return }
-    forgeDetailedTaskVC.forgeInstance = pair.0
-    forgeDetailedTaskVC.taskUniqueID = pair.1
+    forgeDetailedTaskVC.task = (sender as! CDTask)
   }
 
   @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
@@ -91,7 +89,7 @@ extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    performSegue(withIdentifier: "forgeTaskSegue", sender: (tuple[indexPath.section].forge, tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row].uniqueID))
+    performSegue(withIdentifier: "forgeTaskSegue", sender: tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row])
   }
 
 }
