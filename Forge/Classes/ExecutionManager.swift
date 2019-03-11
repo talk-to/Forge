@@ -35,17 +35,27 @@ class ExecutionManager {
           return
         case .NonConditionalRetriable:
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
+        case .Cancelled:
+          return
         }
       }
     }
   }
 
-  func execute(task pTask: PersistentTask) {
+  func execute(task pTask: PersistentTask, delay: TimeInterval? = nil) {
     guard let executor = executors[pTask.task.type] else {
       assertionFailure("Trying to execute without registering an executor")
       return
     }
-    _execute(task: pTask, executor: executor)
+    if let delay = delay {
+      changeManager?.willStart(task: pTask.task)
+    } else {
+      _execute(task: pTask, executor: executor)
+    }
+  }
+
+  func undoChangeManagerAction(pTask: PersistentTask) {
+    changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
   }
 
   /// Just like @p execute, but doesn't assert on executor's presence.

@@ -22,18 +22,19 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   s.source           = { :git => 'git@github.com:talk-to/Forge.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '11.0'
   s.swift_version = '4.2'
 
   s.source_files = 'Forge/Classes/**/*'
 
   s.resource_bundles = {
-    'Forge' => ['Forge/Assets/*.xcdatamodeld']
+    'Forge' => ['Forge/Assets/*.xcdatamodeld', 'Forge/Classes/*.storyboard']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Result', '~> 4.0'
+  s.dependency 'FlockSwiftUtils', '~> 2.2.0'
 
 end

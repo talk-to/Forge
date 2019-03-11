@@ -39,13 +39,16 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.countOfRetries = 0
     cdTask.state = .unknown
     cdTask.type = pTask.task.type
-    cdTask.retryAt = Date.distantFuture
+    cdTask.retryAt = Date.init(timeInterval: pTask.delay, since: Date())
+    print(cdTask.retryAt)
+    cdTask.submittedAt = Date()
+    cdTask.delay = pTask.delay
     return cdTask
   }
 
   func reverseFrom(cdTask: CDTask) -> PersistentTask {
     let task = PersistentTaskToCDTaskTransformer.taskTransformer.task(from: cdTask.taskCoded)
-    return PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries)
+    return PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries, delay: cdTask.delay)
   }
 }
 

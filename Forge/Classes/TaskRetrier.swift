@@ -32,9 +32,11 @@ class TaskRetrier {
   }
 
   private func executeTasks() {
-    persistor.tasksPending()
-      .forEach { pTask in
-        executionManager.safeExecute(task: pTask)
+    persistor.tasksPending { [weak self] (pTasks) in
+      guard let self = self else { return }
+      for pTask in pTasks {
+        self.executionManager.safeExecute(task: pTask)
+      }
     }
   }
 
