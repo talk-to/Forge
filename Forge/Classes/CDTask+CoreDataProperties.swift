@@ -43,5 +43,4 @@ extension CDTask {
       taskState = newValue.rawValue
     }
   }
-
 }

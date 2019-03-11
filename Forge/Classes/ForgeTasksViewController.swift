@@ -38,7 +38,12 @@ public class ForgeTasksViewController: UIViewController {
         let request = CDTask.request() as NSFetchRequest<CDTask>
         let sort = NSSortDescriptor(key: #keyPath(CDTask.retryAt), ascending: true)
         request.sortDescriptors = [sort]
-        let nfrc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: newInstance.persistor.mainContext, sectionNameKeyPath: nil, cacheName: nil)
+        let nfrc = NSFetchedResultsController (
+          fetchRequest: request,
+          managedObjectContext: newInstance.persistor.mainContext,
+          sectionNameKeyPath: nil,
+          cacheName: nil
+        )
         nfrc.delegate = self
         tuple.append((newInstance, nfrc))
         do {
@@ -89,7 +94,10 @@ extension ForgeTasksViewController: UITableViewDelegate, UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    performSegue(withIdentifier: "forgeTaskSegue", sender: tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row])
+    performSegue (
+      withIdentifier: "forgeTaskSegue",
+      sender: tuple[indexPath.section].nfrc.fetchedObjects![indexPath.row]
+    )
   }
 
 }
