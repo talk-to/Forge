@@ -40,9 +40,9 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.state = .unknown
     cdTask.type = pTask.task.type
     cdTask.retryAt = Date.init(timeInterval: pTask.delay, since: Date())
-    print(cdTask.retryAt)
     cdTask.submittedAt = Date()
     cdTask.delay = pTask.delay
+    self.context.saveNow()
     return cdTask
   }
 
