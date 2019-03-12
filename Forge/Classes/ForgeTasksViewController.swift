@@ -13,14 +13,23 @@ public class ForgeTasksViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView!
   private var refreshInstancesTime: Double = 5.0
   private var tuple = [(forge: Forge, nfrc: NSFetchedResultsController<CDTask>)]()
+  private var timer: Timer!
 
   override public func viewDidLoad() {
     super.viewDidLoad()
     fetchAndReloadTable()
-    Timer.scheduledTimer(withTimeInterval: TimeInterval(3), repeats: true) { [weak self] t in
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(3), repeats: true) { [weak self] t in
       guard let strongSelf = self else { return }
       strongSelf.fetchAndReloadTable()
     }
+  }
+
+  public override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    timer.invalidate()
   }
 
   private func fetchAndReloadTable() {

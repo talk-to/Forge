@@ -7,6 +7,10 @@ struct PersistentTask {
   let task: Task
   let delay: TimeInterval
 
+  static func uniqueString() -> String {
+    return UUID().uuidString
+  }
+
   init(task: Task, afterDelay delay: TimeInterval, taskID: String) {
     self.uniqueID = taskID
     self.task = task
