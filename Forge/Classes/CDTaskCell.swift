@@ -14,6 +14,13 @@ class CDTaskCell: UITableViewCell {
   @IBOutlet private weak var uniqueID: UILabel!
   @IBOutlet private weak var retryCount: UILabel!
   @IBOutlet private weak var retryAt: UILabel!
+  static var dateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .none
+    formatter.timeStyle = .medium
+    return formatter
+  }
+
 
   func configure(withObj obj: CDTask) {
     switch obj.state {
@@ -30,11 +37,6 @@ class CDTaskCell: UITableViewCell {
     self.type.text = obj.type
     self.uniqueID.text = obj.uniqueID
     self.retryCount.text = String(obj.countOfRetries)
-    self.retryAt.text = DateFormatter().string(from: obj.retryAt)
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .none
-    dateFormatter.timeStyle = .medium
-    self.retryAt.text = dateFormatter.string(from: obj.retryAt)
+    self.retryAt.text = CDTaskCell.dateFormatter.string(from: obj.retryAt)
   }
-
 }
