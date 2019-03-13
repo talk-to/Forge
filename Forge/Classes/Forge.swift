@@ -35,7 +35,7 @@ public final class Forge {
     }
   }
 
-  public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
+  @discardableResult public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
     let taskID = PersistentTask.uniqueString()
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
