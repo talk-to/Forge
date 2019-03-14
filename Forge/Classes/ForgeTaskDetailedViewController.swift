@@ -17,17 +17,8 @@ class ForgeTaskDetailedViewController: UIViewController {
   @IBOutlet private weak var taskState: UILabel!
   @IBOutlet private weak var type: UILabel!
   @IBOutlet private weak var uniqueID: UILabel!
-  private var labels = [
-    "Count of Retries : ",
-    "Retry At : ",
-    "Task Coded : ",
-    "Task State : ",
-    "Type : ",
-    "UniqueID : ",
-    "Submitted at : ",
-    "Delay : "
-  ]
-  private var labelValues = ["", "", "", "", "", "", "", ""]
+  private var labelDict = [String : String]()
+  private var labelKey = [String]()
   var task: CDTask!
 
   override func viewDidLoad() {
@@ -68,7 +59,7 @@ class ForgeTaskDetailedViewController: UIViewController {
     if let deletes = userInfo[NSDeletedObjectsKey] as? Set<CDTask>, deletes.count > 0 {
       for deletedTask in deletes {
         if task.uniqueID == deletedTask.uniqueID {
-          labelValues[3] = "completed"
+          labelDict["Task State"] = "completed"
           tableView.reloadData()
         }
       }
@@ -76,32 +67,37 @@ class ForgeTaskDetailedViewController: UIViewController {
   }
 
   private func setLabels(task: CDTask) {
+    labelDict.removeAll()
+    labelKey.removeAll()
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .none
     dateFormatter.timeStyle = .medium
-    labelValues[0] = String(task.countOfRetries)
-    labelValues[1] = dateFormatter.string(from: task.retryAt)
-    labelValues[2] = task.taskCoded
+    labelDict["Count of Retries"] = String(task.countOfRetries)
+    labelDict["Retry At"] = dateFormatter.string(from: task.retryAt)
+    labelDict["Task Coded"] = task.taskCoded
     switch task.state {
-    case .dormant: labelValues[3] = "dormant"
-    case .executing: labelValues[3] = "executing"
-    case .unknown: labelValues[3] = "unknown"
+    case .dormant: labelDict["Task State"] = "dormant"
+    case .executing: labelDict["Task State"] = "executing"
+    case .unknown: labelDict["Task State"] = "unknown"
     }
-    labelValues[4] = task.type
-    labelValues[5] = task.uniqueID
-    labelValues[6] = dateFormatter.string(from: task.submittedAt)
-    labelValues[7] = String(task.delay)
+    labelDict["Type"] = task.type
+    labelDict["UniqueID"] = task.uniqueID
+    labelDict["Submitted at"] = dateFormatter.string(from: task.submittedAt)
+    labelDict["Delay"] = String(task.delay)
+    for it in labelDict {
+      labelKey.append(it.key)
+    }
   }
 }
 
 extension ForgeTaskDetailedViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return labels.count
+    return labelDict.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CDTaskDetailedCell") as! CDTaskDetailedCell
-    cell.configure(with: labels[indexPath.row] + labelValues[indexPath.row])
+    cell.configure(with: labelKey[indexPath.row] + " : " +  labelDict[labelKey[indexPath.row]]!)
     return cell
   }
 }
