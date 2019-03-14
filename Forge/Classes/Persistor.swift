@@ -50,8 +50,10 @@ class Persistor {
 
 extension Persistor {
   func save(pTask: PersistentTask) {
-    let _ = transformer.from(pTask: pTask)
-    self.context.saveNow()
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      self.transformer.from(pTask: pTask)
+    }
   }
 
   func markAllTasksReadyToExecute() {

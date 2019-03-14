@@ -10,13 +10,13 @@ public final class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
   /// same persistence layer.
-  let id: String
+  let UUID: String
   let persistor: Persistor
   let executionManager: ExecutionManager
   let taskRetrier: TaskRetrier
 
   public init(with UUID: String) {
-    self.id = UUID
+    self.UUID = UUID
     self.persistor = Persistor(UUID: UUID)
     self.persistor.markAllTasksReadyToExecute()
     self.executionManager = ExecutionManager()
@@ -35,8 +35,8 @@ public final class Forge {
     }
   }
 
-  public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
-    let taskID = UUID().uuidString
+  @discardableResult public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
+    let taskID = PersistentTask.uniqueString()
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
     executionManager.execute(task: pTask, delay: delay)
