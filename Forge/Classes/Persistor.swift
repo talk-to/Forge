@@ -1,5 +1,6 @@
 
 import CoreData
+import FlockSwiftUtils
 
 fileprivate let RetryAfter: TimeInterval = 5
 
@@ -19,6 +20,7 @@ class Persistor {
   let UUID: String
   let persistentContainer: NSPersistentContainer
   let context: NSManagedObjectContext
+  let mainContext : NSManagedObjectContext
   let transformer: PersistentTaskToCDTaskTransformer
 
   init(UUID: String) {
@@ -32,6 +34,8 @@ class Persistor {
       print("Core data stack for Forge initialised.")
     }
     context = persistentContainer.newBackgroundContext()
+    mainContext = persistentContainer.viewContext
+    mainContext.automaticallyMergesChangesFromParent = true
     transformer = PersistentTaskToCDTaskTransformer(context: context)
   }
 
@@ -46,65 +50,128 @@ class Persistor {
 
 extension Persistor {
   func save(pTask: PersistentTask) {
-    let _ = transformer.from(pTask: pTask)
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      self.transformer.from(pTask: pTask)
+    }
   }
 
   func markAllTasksReadyToExecute() {
-    let request = CDTask.request()
-    do {
-      try context.fetch(request).forEach { $0.state = .dormant }
-      try context.save()
-    } catch {
-      assertionFailure("Couldn't save all tasks with dormant state")
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let request = CDTask.request()
+      do {
+        try self.context.fetch(request).forEach { $0.state = .dormant }
+        try self.context.save()
+      } catch {
+        assertionFailure("Couldn't save all tasks with dormant state")
+      }
     }
   }
 
-  func tasks(ofType type: String) -> [PersistentTask] {
-    let request = CDTask.request()
-    request.predicate = NSPredicate(format: "type == %@", type)
-    do {
-      return try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }
-    } catch {
-      assertionFailure("Couldn't get tasks")
+  func tasks(ofType type: String, completionBlockHandler: @escaping ([PersistentTask]) -> Void) {
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let request = CDTask.request()
+      request.predicate = NSPredicate(format: "type == %@", type)
+      do {
+        let pTasks = try self.context.fetch(request).map { self.transformer.reverseFrom(cdTask: $0) }
+        completionBlockHandler(pTasks)
+      } catch {
+        assertionFailure("Couldn't get tasks")
+      }
     }
-    return []
   }
 
-  func tasksPending() -> [PersistentTask] {
-    let request = CDTask.request()
-    request.predicate
-      = NSPredicate(format: "(retryAt <= %@) AND (taskState != %@)",
-                    argumentArray: [NSDate(timeIntervalSinceNow: 0),
-                                    NSNumber(value: TaskState.executing.rawValue)])
-    do {
-      return try context.fetch(request).map { transformer.reverseFrom(cdTask: $0) }
-    } catch {
-      assertionFailure("Couldn't get tasks")
+  func undoableTask(withID id: String, completionBlockHandler: @escaping (PersistentTask) -> Void) {
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let request = CDTask.request()
+      request.predicate = NSPredicate(format: "uniqueID == %@", id)
+      do {
+        guard let cdTask = try self.context.fetch(request).first else { return }
+        let submittedAt = cdTask.submittedAt
+        let delay = cdTask.delay
+        let undoUpto = Date(timeInterval: Double(delay), since: submittedAt)
+        let currentDate = Date()
+        if undoUpto > currentDate {
+          let pTask = self.transformer.reverseFrom(cdTask: cdTask)
+          completionBlockHandler(pTask)
+        }
+      } catch {
+        assertionFailure("Couldn't get tasks")
+      }
     }
-    return []
+  }
+
+  func tasksPending(completionBlockHandler: @escaping ([PersistentTask]) -> Void) {
+    context.perform {
+      let request = CDTask.request()
+      request.predicate
+        = NSPredicate(format: "(retryAt <= %@) AND (taskState != %@)",
+                      argumentArray: [NSDate(timeIntervalSinceNow: 0),
+                                      NSNumber(value: TaskState.executing.rawValue)])
+      request.sortDescriptors = [NSSortDescriptor(key: "submittedAt", ascending: true)]
+      do {
+        let pTasks = try self.context.fetch(request).map { self.transformer.reverseFrom(cdTask: $0) }
+        completionBlockHandler(pTasks)
+      } catch {
+        assertionFailure("Couldn't get tasks")
+      }
+    }
+  }
+
+  func delete(id: String) {
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let request = CDTask.request()
+      let tasks: [CDTask]
+      request.predicate = NSPredicate(format: "uniqueID == %@", id)
+      do {
+        tasks = try self.context.fetch(request)
+        if !tasks.isEmpty {
+          self.context.delete(tasks[0])
+          self.context.saveNow()
+        }
+      } catch {
+        assertionFailure("Couldn't get tasks")
+      }
+    }
   }
 }
 
 extension Persistor: ExecutionDelegate {
   func start(pTask: PersistentTask) {
-    let cdTask = transformer.from(pTask: pTask)
-    assert(cdTask.state != .executing)
-    cdTask.state = .executing
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let cdTask = self.transformer.from(pTask: pTask)
+      assert(cdTask.state != .executing)
+      cdTask.state = .executing
+      self.context.saveNow()
+    }
   }
 
   func delete(pTask: PersistentTask) {
-    let cdTask = transformer.from(pTask: pTask)
-    assert(cdTask.managedObjectContext! == context)
-    context.delete(cdTask)
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let cdTask = self.transformer.from(pTask: pTask)
+      assert(cdTask.managedObjectContext! == self.context)
+      self.context.delete(cdTask)
+      self.context.saveNow()
+    }
   }
 
   func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
-    let cdTask = transformer.from(pTask: pTask)
-    if increaseRetryCount {
-      cdTask.countOfRetries += 1
+    context.perform { [weak self] in
+      guard let self = self else { return }
+      let cdTask = self.transformer.from(pTask: pTask)
+      if increaseRetryCount {
+        cdTask.countOfRetries += 1
+      }
+      assert(cdTask.state == .executing)
+      cdTask.state = .dormant
+      cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
+      self.context.saveNow()
     }
-    assert(cdTask.state == .executing)
-    cdTask.state = .dormant
-    cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
   }
 }
