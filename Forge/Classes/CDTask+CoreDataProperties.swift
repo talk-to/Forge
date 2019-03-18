@@ -22,6 +22,8 @@ extension CDTask {
   @NSManaged public var taskCoded: String
   @NSManaged public var type: String
   @NSManaged public var retryAt: Date
+  @NSManaged public var submittedAt: Date
+  @NSManaged public var delay: TimeInterval
 
   @NSManaged private var countOfRetriesInternal: Int32
   public var countOfRetries: Int {
@@ -41,5 +43,4 @@ extension CDTask {
       taskState = newValue.rawValue
     }
   }
-
 }
