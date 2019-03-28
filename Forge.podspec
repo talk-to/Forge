@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Forge'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'A scalable system to run tasks for your app with support for persistence.'
 
 # This description is used to generate tags and improve search results.
@@ -35,6 +35,6 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Result', '~> 4.0'
-  s.dependency 'FlockSwiftUtils', '~> 2.2.0'
+  s.dependency 'FlockSwiftUtils', '~> 2.2'
 
 end
