@@ -35,6 +35,6 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Result', '~> 4.0'
-  s.dependency 'FlockSwiftUtils', '~> 2.2.0'
+  s.dependency 'FlockSwiftUtils', '~> 2.2'
 
 end
