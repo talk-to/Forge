@@ -142,6 +142,7 @@ extension Persistor {
 
 extension Persistor: ExecutionDelegate {
   func start(pTask: PersistentTask) {
+    print("Forge : Persistor will transition task(\(pTask) to executing state)")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
@@ -152,6 +153,7 @@ extension Persistor: ExecutionDelegate {
   }
 
   func delete(pTask: PersistentTask) {
+    print("Forge : Persistor will delete task(\(pTask))")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
@@ -162,6 +164,7 @@ extension Persistor: ExecutionDelegate {
   }
 
   func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
+    print("Forge : Persistor will transition task(\(pTask) to dormant state)")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
