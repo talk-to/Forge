@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Forge'
-  s.version          = '0.2.1'
+  s.version          = '1.0.0'
   s.summary          = 'A scalable system to run tasks for your app with support for persistence.'
 
 # This description is used to generate tags and improve search results.
