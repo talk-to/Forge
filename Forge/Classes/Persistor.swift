@@ -43,7 +43,7 @@ class Persistor {
     do {
       try context.save()
     } catch {
-      assertionFailure(error.localizedDescription)
+      fatalError(error.localizedDescription)
     }
   }
 }
@@ -64,7 +64,7 @@ extension Persistor {
         try self.context.fetch(request).forEach { $0.state = .dormant }
         try self.context.save()
       } catch {
-        assertionFailure("Couldn't save all tasks with dormant state")
+        fatalError("Couldn't save all tasks with dormant state")
       }
     }
   }
@@ -78,7 +78,7 @@ extension Persistor {
         let pTasks = try self.context.fetch(request).map { self.transformer.reverseFrom(cdTask: $0) }
         completionBlockHandler(pTasks)
       } catch {
-        assertionFailure("Couldn't get tasks")
+        fatalError("Couldn't get tasks")
       }
     }
   }
@@ -99,7 +99,7 @@ extension Persistor {
           completionBlockHandler(pTask)
         }
       } catch {
-        assertionFailure("Couldn't get tasks")
+        fatalError("Couldn't get tasks")
       }
     }
   }
@@ -116,7 +116,7 @@ extension Persistor {
         let pTasks = try self.context.fetch(request).map { self.transformer.reverseFrom(cdTask: $0) }
         completionBlockHandler(pTasks)
       } catch {
-        assertionFailure("Couldn't get tasks")
+        fatalError("Couldn't get tasks")
       }
     }
   }
@@ -134,7 +134,7 @@ extension Persistor {
           self.context.saveNow()
         }
       } catch {
-        assertionFailure("Couldn't get tasks")
+        fatalError("Couldn't get tasks")
       }
     }
   }
@@ -146,7 +146,7 @@ extension Persistor: ExecutionDelegate {
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
-      assert(cdTask.state != .executing)
+      precondition(cdTask.state != .executing)
       cdTask.state = .executing
       self.context.saveNow()
     }
@@ -157,7 +157,7 @@ extension Persistor: ExecutionDelegate {
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
-      assert(cdTask.managedObjectContext! == self.context)
+      precondition(cdTask.managedObjectContext! == self.context)
       self.context.delete(cdTask)
       self.context.saveNow()
     }
@@ -171,7 +171,7 @@ extension Persistor: ExecutionDelegate {
       if increaseRetryCount {
         cdTask.countOfRetries += 1
       }
-      assert(cdTask.state == .executing)
+      precondition(cdTask.state == .executing)
       cdTask.state = .dormant
       cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
       self.context.saveNow()
