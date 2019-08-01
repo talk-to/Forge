@@ -25,6 +25,7 @@ public final class Forge {
   let persistor: Persistor
   let executionManager: ExecutionManager
   let taskRetrier: TaskRetrier
+  var logger: ForgeLogging?
 
   public init(with UUID: String) {
     self.UUID = UUID
@@ -35,6 +36,10 @@ public final class Forge {
     self.taskRetrier = TaskRetrier(executionManager: self.executionManager, persistor: self.persistor)
     self.taskRetrier.startRetrialForTasks()
     ForgeViewer.addToInstances(anObject: self)
+  }
+  
+  public func setupLogging(with logger: ForgeLogging) {
+    self.logger = logger
   }
 
   public weak var changeManager: ChangeManager? {
