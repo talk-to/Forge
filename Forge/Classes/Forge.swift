@@ -6,6 +6,17 @@ public enum ForgeError: Error {
   case typeNotFound
 }
 
+public enum LoggingSeverity {
+  case Debug
+  case Info
+  case Warn
+  case Error
+}
+
+public protocol ForgeLogging {
+  func log(ofType severity: LoggingSeverity, with logData: Any)
+}
+
 public final class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
