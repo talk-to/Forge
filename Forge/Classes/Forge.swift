@@ -9,6 +9,7 @@ public enum ForgeError: Error {
 public enum LoggingSeverity {
   case Debug
   case Info
+  case Verbose
   case Warn
   case Error
 }
