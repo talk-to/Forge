@@ -15,7 +15,7 @@ public enum LoggingSeverity {
 }
 
 public protocol ForgeLogging {
-  func log(ofType severity: LoggingSeverity, with logData: Any)
+  func log(ofType severity: LoggingSeverity, withMessage message: String, _ data: Any...)
 }
 
 public final class Forge {
