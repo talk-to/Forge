@@ -23,6 +23,7 @@ class ExecutionManager {
       }
       switch result {
       case .success(_):
+        logger?.verbose("Task successfully executed", pTask)
         strongSelf.executionDelegate?.delete(pTask: pTask)
         strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
       case .failure(let error):
@@ -50,12 +51,14 @@ class ExecutionManager {
     if let delay = delay {
       changeManager?.willStart(task: pTask.task)
     } else {
+      logger?.verbose("Task %@ passed on to executor", pTask)
       _execute(task: pTask, executor: executor)
     }
   }
 
   func undoChangeManagerAction(pTask: PersistentTask) {
     changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
+    logger?.verbose("Change manager reverts task %@ changes", pTask)
   }
 
   /// Just like @p execute, but doesn't assert on executor's presence.

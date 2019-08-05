@@ -32,6 +32,7 @@ struct PersistentTaskToCDTaskTransformer {
 
   func from(pTask: PersistentTask) -> CDTask {
     if let cdTask = task(for: pTask) {
+      logger?.verbose("Persistent task : \(pTask.uniqueID) converted into CDTask : \(cdTask.uniqueID)")
       return cdTask
     }
     let cdTask = CDTask.insertTask(with: pTask.uniqueID, managedObjectContext: context)
@@ -43,6 +44,7 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.submittedAt = Date()
     cdTask.delay = pTask.delay
     self.context.saveNow()
+    logger?.verbose("Persistent task : \(pTask.uniqueID) converted into CDTask : \(cdTask.uniqueID)")
     return cdTask
   }
 

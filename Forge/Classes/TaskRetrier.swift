@@ -19,7 +19,7 @@ class TaskRetrier {
     if repeatingTimer == nil {
       repeatingTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(ExecutionTimeGap), repeats: true) { [weak self] t in
         guard let strongSelf = self else {
-          print("Retrier deallocated, stopping..")
+          logger?.verbose("Retrier deallocated, stopping..")
           return
         }
         strongSelf.executeTasks()

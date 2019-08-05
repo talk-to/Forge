@@ -22,6 +22,8 @@ public protocol ForgeLogging {
   func error(_ message: String, _ data: Any...)
 }
 
+var logger: ForgeLogging?
+
 public final class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
@@ -30,7 +32,6 @@ public final class Forge {
   let persistor: Persistor
   let executionManager: ExecutionManager
   let taskRetrier: TaskRetrier
-  var logger: ForgeLogging?
 
   public init(with UUID: String) {
     self.UUID = UUID
@@ -41,10 +42,11 @@ public final class Forge {
     self.taskRetrier = TaskRetrier(executionManager: self.executionManager, persistor: self.persistor)
     self.taskRetrier.startRetrialForTasks()
     ForgeViewer.addToInstances(anObject: self)
+    logger?.verbose("Forge instance initialised")
   }
   
-  public func setupLogging(with logger: ForgeLogging) {
-    self.logger = logger
+  public func setupLogging(with injectedLogger: ForgeLogging) {
+    logger = injectedLogger
   }
 
   public weak var changeManager: ChangeManager? {
@@ -58,8 +60,13 @@ public final class Forge {
 
   @discardableResult public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
     let taskID = PersistentTask.uniqueString()
+    logger?.verbose("Task submitted with generated id : \(taskID)")
+    if delay != nil {
+      logger?.verbose("Delay of \(delay) seconds")
+    }
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
+    logger?.verbose("Persistent task: \(pTask.uniqueID) saved in core data")
     executionManager.execute(task: pTask, delay: delay)
     return taskID
   }
@@ -75,10 +82,12 @@ public final class Forge {
   }
 
   public func undoTask(id: String) {
+    logger?.verbose("Task with id : %@ requested to be reverted", id)
     persistor.undoableTask(withID: id) { [weak self] (pTask) in
       guard let self = self else { return }
       self.executionManager.undoChangeManagerAction(pTask: pTask)
       self.persistor.delete(id: id)
+      logger?.verbose("Task %@ reverted", pTask)
     }
   }
 }
