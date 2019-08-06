@@ -24,5 +24,9 @@ class CDTask: NSManagedObject {
       return nil
     }
   }
+  
+  override public var description: String {
+    return "CDTask(uniqueID: \(self.uniqueID), type: \(self.type), retryAt: \(self.retryAt), submittedAt: \(self.submittedAt), delay: \(self.delay))"
+  }
 
 }
