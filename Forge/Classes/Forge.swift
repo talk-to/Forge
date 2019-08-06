@@ -6,20 +6,12 @@ public enum ForgeError: Error {
   case typeNotFound
 }
 
-public enum LoggingSeverity {
-  case Debug
-  case Info
-  case Verbose
-  case Warn
-  case Error
-}
-
 public protocol ForgeLogging {
-  func debug(_ message: String, _ data: Any...)
-  func info(_ message: String, _ data: Any...)
-  func verbose(_ message: String, _ data: Any...)
-  func warn(_ message: String, _ data: Any...)
-  func error(_ message: String, _ data: Any...)
+  func debug(_ message: String)
+  func info(_ message: String)
+  func verbose(_ message: String)
+  func warn(_ message: String)
+  func error(_ message: String)
 }
 
 var logger: ForgeLogging?
@@ -66,7 +58,7 @@ public final class Forge {
     }
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
-    logger?.verbose("Persistent task: \(pTask.uniqueID) saved in core data")
+    logger?.verbose("Persistent task: \(pTask) saved in core data")
     executionManager.execute(task: pTask, delay: delay)
     return taskID
   }
@@ -82,12 +74,12 @@ public final class Forge {
   }
 
   public func undoTask(id: String) {
-    logger?.verbose("Task with id : %@ requested to be reverted", id)
+    logger?.verbose("Task with id : \(id) requested to be reverted")
     persistor.undoableTask(withID: id) { [weak self] (pTask) in
       guard let self = self else { return }
       self.executionManager.undoChangeManagerAction(pTask: pTask)
       self.persistor.delete(id: id)
-      logger?.verbose("Task %@ reverted", pTask)
+      logger?.verbose("Task \(pTask) reverted")
     }
   }
 }

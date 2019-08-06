@@ -35,6 +35,7 @@ class TaskRetrier {
     persistor.tasksPending { [weak self] (pTasks) in
       guard let self = self else { return }
       for pTask in pTasks {
+        logger?.verbose("Retrial of task : \(pTask)")
         self.executionManager.safeExecute(task: pTask)
       }
     }
