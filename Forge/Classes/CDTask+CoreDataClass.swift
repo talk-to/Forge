@@ -20,7 +20,6 @@ class CDTask: NSManagedObject {
       return try managedObjectContext.fetch(fetchRequest).first
     } catch {
       logger?.verbose("Got error \(error)")
-      print("Got error \(error)")
       return nil
     }
   }
