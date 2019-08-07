@@ -14,7 +14,7 @@ public protocol ForgeLogging {
   func error(_ message: String)
 }
 
-var logger: ForgeLogging?
+private(set) var logger: ForgeLogging?
 
 public final class Forge {
 
