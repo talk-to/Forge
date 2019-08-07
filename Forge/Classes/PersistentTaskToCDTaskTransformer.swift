@@ -32,7 +32,7 @@ struct PersistentTaskToCDTaskTransformer {
 
   func from(pTask: PersistentTask) -> CDTask {
     if let cdTask = task(for: pTask) {
-      logger?.verbose("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
+      logger?.forgeVerbose("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
       return cdTask
     }
     let cdTask = CDTask.insertTask(with: pTask.uniqueID, managedObjectContext: context)
@@ -44,14 +44,14 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.submittedAt = Date()
     cdTask.delay = pTask.delay
     self.context.saveNow()
-    logger?.verbose("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
+    logger?.forgeVerbose("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
     return cdTask
   }
 
   func reverseFrom(cdTask: CDTask) -> PersistentTask {
     let task = PersistentTaskToCDTaskTransformer.taskTransformer.task(from: cdTask.taskCoded)
     let pTask = PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries, delay: cdTask.delay)
-    logger?.verbose("CDTask : \(cdTask) converted into \(pTask)")
+    logger?.forgeVerbose("CDTask : \(cdTask) converted into \(pTask)")
     return pTask
   }
 }

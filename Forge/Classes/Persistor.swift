@@ -31,7 +31,7 @@ class Persistor {
       if let error = error {
         fatalError("Failed to load Core Data stack: \(error)")
       }
-      logger?.verbose("Core data stack for Forge initialised.")
+      logger?.forgeVerbose("Core data stack for Forge initialised.")
     }
     context = persistentContainer.newBackgroundContext()
     mainContext = persistentContainer.viewContext
@@ -142,7 +142,7 @@ extension Persistor {
 
 extension Persistor: ExecutionDelegate {
   func start(pTask: PersistentTask) {
-    logger?.verbose("Forge : Persistor will transition task(\(pTask) to executing state)")
+    logger?.forgeVerbose("Forge : Persistor will transition task(\(pTask) to executing state)")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
@@ -153,7 +153,7 @@ extension Persistor: ExecutionDelegate {
   }
 
   func delete(pTask: PersistentTask) {
-    logger?.verbose("Forge : Persistor will delete task(\(pTask))")
+    logger?.forgeVerbose("Forge : Persistor will delete task(\(pTask))")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
@@ -165,7 +165,7 @@ extension Persistor: ExecutionDelegate {
   }
 
   func fail(pTask: PersistentTask, increaseRetryCount: Bool) {
-    logger?.verbose("Forge : Persistor will transition task(\(pTask) to Dormant state)")
+    logger?.forgeVerbose("Forge : Persistor will transition task(\(pTask) to Dormant state)")
     context.perform { [weak self] in
       guard let self = self else { return }
       let cdTask = self.transformer.from(pTask: pTask)
