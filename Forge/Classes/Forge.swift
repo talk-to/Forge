@@ -37,7 +37,7 @@ public final class Forge {
     logger?.forgeVerbose("Forge instance initialised")
   }
   
-  public func setupLogging(with injectedLogger: ForgeLogging) {
+  public static func setupLogging(with injectedLogger: ForgeLogging) {
     logger = injectedLogger
   }
 
