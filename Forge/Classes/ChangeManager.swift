@@ -5,5 +5,5 @@ public protocol ChangeManager: class {
 
   func willStart(task: Task)
 
-  func didComplete(task: Task, result: Result<Any, ExecutorError>)
+  func didComplete(task: Task, result: Result<Any, ExecutorError>, errorCode: String?)
 }

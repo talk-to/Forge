@@ -24,12 +24,12 @@ class ExecutionManager {
       switch result {
       case .success(_):
         strongSelf.executionDelegate?.delete(pTask: pTask)
-        strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
+        strongSelf.changeManager?.didComplete(task: pTask.task, result: result, errorCode: nil)
       case .failure(let error):
         switch error {
-        case .NonRetriable:
+        case .NonRetriable(let errorCode):
           strongSelf.executionDelegate?.delete(pTask: pTask)
-          strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
+          strongSelf.changeManager?.didComplete(task: pTask.task, result: result, errorCode: errorCode)
         case .ConditionalRetriable:
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: false)
           return
@@ -55,7 +55,7 @@ class ExecutionManager {
   }
 
   func undoChangeManagerAction(pTask: PersistentTask) {
-    changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
+    changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled), errorCode: nil)
   }
 
   /// Just like @p execute, but doesn't assert on executor's presence.
