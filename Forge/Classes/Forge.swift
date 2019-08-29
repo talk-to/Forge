@@ -8,8 +8,8 @@ public enum ForgeError: Error {
 
 public protocol ForgeLogging {
   func forgeDebug(_ message: String)
-  func forgeInfo(_ message: String)
   func forgeVerbose(_ message: String)
+  func forgeInfo(_ message: String)
   func forgeWarn(_ message: String)
   func forgeError(_ message: String)
 }
