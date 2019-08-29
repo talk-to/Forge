@@ -23,21 +23,21 @@ class ExecutionManager {
       }
       switch result {
       case .success(_):
-        logger?.forgeVerbose("Task \(pTask) successfully executed")
+        logger?.forgeInfo("Task \(pTask) successfully executed")
         strongSelf.executionDelegate?.delete(pTask: pTask)
         strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
       case .failure(let error):
         switch error {
         case .NonRetriable:
-          logger?.forgeVerbose("Task \(pTask) failed to complete : Non Retriable")
+          logger?.forgeWarn("Task \(pTask) failed to complete : Non Retriable")
           strongSelf.executionDelegate?.delete(pTask: pTask)
           strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
         case .ConditionalRetriable:
-          logger?.forgeVerbose("Task \(pTask) failed to complete : Conditional Retriable")
+          logger?.forgeWarn("Task \(pTask) failed to complete : Conditional Retriable")
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: false)
           return
         case .NonConditionalRetriable:
-          logger?.forgeVerbose("Task \(pTask) failed to complete : Non Conditional Retriable")
+          logger?.forgeWarn("Task \(pTask) failed to complete : Non Conditional Retriable")
           strongSelf.executionDelegate?.fail(pTask: pTask, increaseRetryCount: true)
         case .Cancelled:
           return
@@ -54,14 +54,14 @@ class ExecutionManager {
     if let delay = delay {
       changeManager?.willStart(task: pTask.task)
     } else {
-      logger?.forgeVerbose("Task \(pTask) passed on to executor")
+      logger?.forgeInfo("Task \(pTask) passed on to executor")
       _execute(task: pTask, executor: executor)
     }
   }
 
   func undoChangeManagerAction(pTask: PersistentTask) {
     changeManager?.didComplete(task: pTask.task, result: Result.failure(ExecutorError.Cancelled))
-    logger?.forgeVerbose("Change manager reverts task \(pTask)")
+    logger?.forgeInfo("Change manager reverts task \(pTask)")
   }
 
   /// Just like @p execute, but doesn't assert on executor's presence.

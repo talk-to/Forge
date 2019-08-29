@@ -52,13 +52,13 @@ public final class Forge {
 
   @discardableResult public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
     let taskID = PersistentTask.uniqueString()
-    logger?.forgeVerbose("Task submitted with generated id : \(taskID)")
+    logger?.forgeInfo("Task submitted with generated id : \(taskID)")
     if delay != nil {
-      logger?.forgeVerbose("Delay of \(delay) seconds")
+      logger?.forgeInfo("Delay of \(delay) seconds")
     }
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
-    logger?.forgeVerbose("Persistent task: \(pTask) saved in core data")
+    logger?.forgeInfo("Persistent task: \(pTask) saved in core data")
     executionManager.execute(task: pTask, delay: delay)
     return taskID
   }
@@ -74,12 +74,12 @@ public final class Forge {
   }
 
   public func undoTask(id: String) {
-    logger?.forgeVerbose("Task with id : \(id) requested to be reverted")
+    logger?.forgeInfo("Task with id : \(id) requested to be reverted")
     persistor.undoableTask(withID: id) { [weak self] (pTask) in
       guard let self = self else { return }
       self.executionManager.undoChangeManagerAction(pTask: pTask)
       self.persistor.delete(id: id)
-      logger?.forgeVerbose("Task \(pTask) reverted")
+      logger?.forgeInfo("Task \(pTask) reverted")
     }
   }
 }

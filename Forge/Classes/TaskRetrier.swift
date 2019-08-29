@@ -19,7 +19,7 @@ class TaskRetrier {
     if repeatingTimer == nil {
       repeatingTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(ExecutionTimeGap), repeats: true) { [weak self] t in
         guard let strongSelf = self else {
-          logger?.forgeVerbose("Retrier deallocated, stopping..")
+          logger?.forgeWarn("Retrier deallocated, stopping..")
           return
         }
         strongSelf.executeTasks()
@@ -35,7 +35,7 @@ class TaskRetrier {
     persistor.tasksPending { [weak self] (pTasks) in
       guard let self = self else { return }
       for pTask in pTasks {
-        logger?.forgeVerbose("Retrial of task : \(pTask)")
+        logger?.forgeInfo("Retrial of task : \(pTask)")
         self.executionManager.safeExecute(task: pTask)
       }
     }

@@ -19,7 +19,7 @@ class CDTask: NSManagedObject {
     do {
       return try managedObjectContext.fetch(fetchRequest).first
     } catch {
-      logger?.forgeVerbose("Got error \(error)")
+      logger?.forgeError("Got error \(error)")
       return nil
     }
   }
