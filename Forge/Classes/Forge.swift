@@ -6,6 +6,16 @@ public enum ForgeError: Error {
   case typeNotFound
 }
 
+public protocol ForgeLogging {
+  func forgeDebug(_ message: String)
+  func forgeVerbose(_ message: String)
+  func forgeInfo(_ message: String)
+  func forgeWarn(_ message: String)
+  func forgeError(_ message: String)
+}
+
+private(set) var logger: ForgeLogging?
+
 public final class Forge {
 
   /// Is used for persistence name so that multiple instances do not end up using
@@ -24,6 +34,11 @@ public final class Forge {
     self.taskRetrier = TaskRetrier(executionManager: self.executionManager, persistor: self.persistor)
     self.taskRetrier.startRetrialForTasks()
     ForgeViewer.addToInstances(anObject: self)
+    logger?.forgeVerbose("Forge instance initialised")
+  }
+  
+  public static func inject(logger injectedLogger: ForgeLogging) {
+    logger = injectedLogger
   }
 
   public weak var changeManager: ChangeManager? {
@@ -37,8 +52,13 @@ public final class Forge {
 
   @discardableResult public func submit(task: Task, afterDelay delay: TimeInterval? = nil) -> String {
     let taskID = PersistentTask.uniqueString()
+    logger?.forgeInfo("Task submitted with generated id : \(taskID)")
+    if delay != nil {
+      logger?.forgeInfo("Delay of \(delay) seconds")
+    }
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
+    logger?.forgeInfo("Persistent task: \(pTask) saved in core data")
     executionManager.execute(task: pTask, delay: delay)
     return taskID
   }
@@ -54,10 +74,12 @@ public final class Forge {
   }
 
   public func undoTask(id: String) {
+    logger?.forgeInfo("Task with id : \(id) requested to be reverted")
     persistor.undoableTask(withID: id) { [weak self] (pTask) in
       guard let self = self else { return }
       self.executionManager.undoChangeManagerAction(pTask: pTask)
       self.persistor.delete(id: id)
+      logger?.forgeInfo("Task \(pTask) reverted")
     }
   }
 }

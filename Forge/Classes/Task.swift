@@ -18,4 +18,9 @@ public final class Task: Codable {
     self.type = type
     self.paramsData = try encoder.encode(params)
   }
+  
+  public var description: String {
+    return "Task(id: \(self.id), type: \(self.type))"
+  }
+  
 }

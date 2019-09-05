@@ -19,9 +19,13 @@ class CDTask: NSManagedObject {
     do {
       return try managedObjectContext.fetch(fetchRequest).first
     } catch {
-      print("Got error \(error)")
+      logger?.forgeError("Got error \(error)")
       return nil
     }
+  }
+  
+  override public var description: String {
+    return "CDTask(uniqueID: \(self.uniqueID), type: \(self.type), retryAt: \(self.retryAt), submittedAt: \(self.submittedAt), delay: \(self.delay))"
   }
 
 }
