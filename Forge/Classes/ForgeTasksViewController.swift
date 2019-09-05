@@ -58,7 +58,7 @@ public class ForgeTasksViewController: UIViewController {
         do {
           try tuple[index].nfrc.performFetch()
         } catch let error as NSError {
-          print("Could not fetch. \(error), \(error.userInfo)")
+          logger?.forgeError("Could not fetch. \(error), \(error.userInfo)")
         }
       }
     }
@@ -68,7 +68,7 @@ public class ForgeTasksViewController: UIViewController {
     do {
       try tuple[index].nfrc.performFetch()
     } catch let error as NSError {
-      print("Could not fetch. \(error), \(error.userInfo)")
+      logger?.forgeError("Could not fetch. \(error), \(error.userInfo)")
     }
   }
 

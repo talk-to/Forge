@@ -32,6 +32,7 @@ struct PersistentTaskToCDTaskTransformer {
 
   func from(pTask: PersistentTask) -> CDTask {
     if let cdTask = task(for: pTask) {
+      logger?.forgeInfo("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
       return cdTask
     }
     let cdTask = CDTask.insertTask(with: pTask.uniqueID, managedObjectContext: context)
@@ -43,12 +44,15 @@ struct PersistentTaskToCDTaskTransformer {
     cdTask.submittedAt = Date()
     cdTask.delay = pTask.delay
     self.context.saveNow()
+    logger?.forgeInfo("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
     return cdTask
   }
 
   func reverseFrom(cdTask: CDTask) -> PersistentTask {
     let task = PersistentTaskToCDTaskTransformer.taskTransformer.task(from: cdTask.taskCoded)
-    return PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries, delay: cdTask.delay)
+    let pTask = PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries, delay: cdTask.delay)
+    logger?.forgeInfo("CDTask : \(cdTask) converted into \(pTask)")
+    return pTask
   }
 }
 
