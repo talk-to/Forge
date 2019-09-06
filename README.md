@@ -4,28 +4,47 @@
 [![License](https://img.shields.io/cocoapods/l/Forge.svg?style=flat)](https://cocoapods.org/pods/Forge)
 [![Platform](https://img.shields.io/cocoapods/p/Forge.svg?style=flat)](https://cocoapods.org/pods/Forge)
 
-Task handler for iOS that can persist tasks across restarts and intelligently retry them
+Simple Task handler for iOS
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Example](#example)
+- [Credits](#credits)
+- [License](#license)
 
 Spec: https://docs.google.com/document/d/13LBDvwLBhahtnTZs5nPMVRNKRyCtP-MZ7yHMkVamfT0/edit#
+
+## Features
+
+[x] Task persistence across app restarts
+[x] Start tasks with delay (simulating undo)
+[x] Have tasks retriable
+[x] Task viewer for debugging
+[x] extensive logging support
+
+## Requirements
+
+* Swift 5+
+
+## Installation
+
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Forge into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+pod 'Forge',
+```
 
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
 
-## Installation
+## Credits
 
-TaskManager is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'Forge'
-```
-
-## Author
-
-Ayush Goel, ayushgoel111@gmail.com
+Ayush Goel, ayush.g@flock.com
+Dinesh Kumar, dinesh.ku@flock.com
+Aditya Ghosh, aditya.gh@flock.com
 
 ## License
 
