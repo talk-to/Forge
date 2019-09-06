@@ -49,7 +49,7 @@ class ExecutionManager {
     guard let executor = executors[pTask.task.type] else {
       fatalError("Trying to execute without registering an executor")
     }
-    if let delay = delay {
+    if delay != nil {
       changeManager?.willStart(task: pTask.task)
     } else {
       logger?.forgeInfo("Task \(pTask) passed on to executor")
