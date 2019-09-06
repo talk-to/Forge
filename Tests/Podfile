@@ -1,3 +1,6 @@
+source 'git@github.com:talk-to/private-cocoapod-specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 use_frameworks!
 
 platform :ios, '10.0'
