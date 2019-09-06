@@ -19,7 +19,6 @@ class ExecutionManager {
     executor.execute(task: pTask.task, countOfRetries: pTask.countOfRetries) { [weak self] result in
       guard let strongSelf = self else {
         fatalError("Execution manager deallocated!")
-        return
       }
       switch result {
       case .success(_):
@@ -49,7 +48,6 @@ class ExecutionManager {
   func execute(task pTask: PersistentTask, delay: TimeInterval? = nil) {
     guard let executor = executors[pTask.task.type] else {
       fatalError("Trying to execute without registering an executor")
-      return
     }
     if let delay = delay {
       changeManager?.willStart(task: pTask.task)
