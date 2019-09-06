@@ -53,7 +53,7 @@ class PersistentTaskToCDTaskTransformerTests: XCTestCase {
     let transformer = PersistentTaskToCDTaskTransformer(context: container.viewContext)
 
     let task = try! Task(id: "id", type: "type", params: ["params": "params"])
-    let pTask = PersistentTask(task: task)
+    let pTask = PersistentTask(task: task, afterDelay: 1, taskID: "id")
     let cdTask = transformer.from(pTask: pTask)
     XCTAssertEqual(cdTask.countOfRetries, 0)
     XCTAssertEqual(cdTask.state, .unknown)

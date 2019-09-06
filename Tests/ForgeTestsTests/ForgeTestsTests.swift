@@ -33,14 +33,14 @@ class TestChangeManager: ChangeManager {
   }
 
   var didCompleteCalledTimes = 0
-  func didComplete(task: Task, result: Result<Bool, ExecutorError>) {
+  func didComplete(task: Task, result: Result<Any, ExecutorError>) {
     didCompleteCalledTimes += 1
   }
 }
 
 class TestExecutor: Executor {
   var executedTasks = 0
-  func execute(task: Task, countOfRetries: Int, completion: @escaping (Result<Bool, ExecutorError>) -> Void) {
+  func execute(task: Task, countOfRetries: Int, completion: @escaping (Result<Any, ExecutorError>) -> Void) {
     executedTasks += 1
     completion(Result(value: true))
   }
