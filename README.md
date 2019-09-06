@@ -17,11 +17,11 @@ Spec: https://docs.google.com/document/d/13LBDvwLBhahtnTZs5nPMVRNKRyCtP-MZ7yHMkV
 
 ## Features
 
-[x] Task persistence across app restarts
-[x] Start tasks with delay (simulating undo)
-[x] Have tasks retriable
-[x] Task viewer for debugging
-[x] extensive logging support
+- [x] Task persistence across app restarts
+- [x] Start tasks with delay (simulating undo)
+- [x] Have tasks retriable
+- [x] Task viewer for debugging
+- [x] extensive logging support
 
 ## Requirements
 
