@@ -30,7 +30,7 @@ struct PersistentTaskToCDTaskTransformer {
     return CDTask.task(with: pTask.uniqueID, managedObjectContext: context)
   }
 
-  func from(pTask: PersistentTask) -> CDTask {
+  @discardableResult func from(pTask: PersistentTask) -> CDTask {
     if let cdTask = task(for: pTask) {
       logger?.forgeInfo("Persistent task : \(pTask) converted into CDTask : \(cdTask)")
       return cdTask
