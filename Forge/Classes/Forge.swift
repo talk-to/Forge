@@ -54,7 +54,7 @@ public final class Forge {
     let taskID = PersistentTask.uniqueString()
     logger?.forgeInfo("Task submitted with generated id : \(taskID)")
     if delay != nil {
-      logger?.forgeInfo("Delay of \(delay) seconds")
+      logger?.forgeInfo("Delay of \(String(describing: delay)) seconds")
     }
     let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
     persistor.save(pTask: pTask)
