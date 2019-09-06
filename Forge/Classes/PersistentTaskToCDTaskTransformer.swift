@@ -50,7 +50,7 @@ struct PersistentTaskToCDTaskTransformer {
 
   func reverseFrom(cdTask: CDTask) -> PersistentTask {
     let task = PersistentTaskToCDTaskTransformer.taskTransformer.task(from: cdTask.taskCoded)
-    let pTask = PersistentTask(uniqueID: cdTask.uniqueID, task: task, countOfRetries: cdTask.countOfRetries, delay: cdTask.delay)
+    let pTask = PersistentTask(uniqueID: cdTask.uniqueID, task: task, delay: cdTask.delay, countOfRetries: cdTask.countOfRetries)
     logger?.forgeInfo("CDTask : \(cdTask) converted into \(pTask)")
     return pTask
   }

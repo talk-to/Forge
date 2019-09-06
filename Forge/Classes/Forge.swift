@@ -56,7 +56,7 @@ public final class Forge {
     if delay != nil {
       logger?.forgeInfo("Delay of \(String(describing: delay)) seconds")
     }
-    let pTask = PersistentTask(task: task, afterDelay: delay ?? 0.0, taskID: taskID)
+    let pTask = PersistentTask(uniqueID: taskID, task: task, delay: delay ?? 0)
     persistor.save(pTask: pTask)
     logger?.forgeInfo("Persistent task: \(pTask) saved in core data")
     executionManager.execute(task: pTask, delay: delay)
