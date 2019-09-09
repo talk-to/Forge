@@ -73,15 +73,12 @@ pod 'Forge',
 	  ```
 	  
 	2. Present the created ViewController in your view heirarchy.
-	![ForgeTasksViewController demo](doc/images/ForgeTasksViewControllerIllustration.png)
   
 Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder. Run `pod install` before opening the workspace.
 
 
 
 ## Architecture
-
-![Architecture](doc/images/architecture.png)
 
 **Please read [architecture doc](doc/architecture.md) for more details.**
 
