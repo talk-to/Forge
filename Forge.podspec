@@ -18,7 +18,7 @@ also persists tasks with it so that any pending tasks can be restarted across ap
   s.homepage         = 'https://github.com/talk-to/Forge'
   s.license          = { :type => 'BSD 3-Clause', :file => 'LICENSE' }
   s.author           = { 'Ayush Goel' => 'ayushgoel111@gmail.com' }
-  s.source           = { :git => 'git@github.com:talk-to/Forge.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/talk-to/Forge.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '11.0'
   s.swift_version = '4.2'
