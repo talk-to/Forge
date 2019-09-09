@@ -65,9 +65,9 @@ Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder.
 
 ## Credits
 
-* Ayush Goel, ayush.g@flock.com
-* Dinesh Kumar, dinesh.ku@flock.com
-* Aditya Ghosh, aditya.gh@flock.com
+* [Ayush Goel](https://github.com/ayushgoel)
+* [Aditya Ghosh](https://github.com/adityaghosh996)
+* [Dinesh Kumar](https://github.com/dineshflock)
 
 ## License
 
