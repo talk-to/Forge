@@ -1,8 +1,8 @@
 # Forge
 
-[![Version](https://img.shields.io/cocoapods/v/Forge.svg?style=flat)](https://cocoapods.org/pods/Forge)
-[![License](https://img.shields.io/cocoapods/l/Forge.svg?style=flat)](https://cocoapods.org/pods/Forge)
-[![Platform](https://img.shields.io/cocoapods/p/Forge.svg?style=flat)](https://cocoapods.org/pods/Forge)
+[![Version](https://img.shields.io/cocoapods/v/FlockForge.svg?style=flat)](https://cocoapods.org/pods/FlockForge)
+[![License](https://img.shields.io/cocoapods/l/FlockForge.svg?style=flat)](https://cocoapods.org/pods/FlockForge)
+[![Platform](https://img.shields.io/cocoapods/p/FlockForge.svg?style=flat)](https://cocoapods.org/pods/FlockForge)
 
 Simple Task handler for iOS
 
@@ -32,7 +32,7 @@ Simple Task handler for iOS
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Forge into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'Forge',
+pod 'FlockForge',
 ```
 
 ## Example
