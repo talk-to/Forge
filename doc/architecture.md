@@ -82,11 +82,5 @@ In this case, ChangeManager IS told about task completion.
 Note: Executor is expected to keep a check on countOfRetries and give a Non-Retriable fail at some point. Otherwise the task would forever be stuck in retrying.
 
 # Debugging
+
 Check [debugging](debugging.md)
-
-#FAQ
-
-1. What kind of name is "Forge"?
-
-   * Forge is name of one of X-Men. More details in [naming.md](naming.md)
-2.
