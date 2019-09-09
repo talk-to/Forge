@@ -63,6 +63,19 @@ pod 'Forge',
 
 Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder. Run `pod install` before opening the workspace.
 
+4. Presenting the Forge Tasks View Controller
+
+  ```swift
+  let storyBoard = UIStoryboard(name: "ForgeTask", bundle: Bundle(for: Forge.self))
+  guard let forgeTasksVC = storyBoard.instantiateViewController(withIdentifier: "ForgeTasksViewController")
+  as? ForgeTasksViewController else {
+  fatalError("Could not instantiate TroubleshootController")
+  }
+  let navVC = UINavigationController(rootViewController: forgeTasksVC)
+  present(navVC, animated: true, completion: nil)
+  ```
+
+
 ## Credits
 
 * [Ayush Goel](https://github.com/ayushgoel)
