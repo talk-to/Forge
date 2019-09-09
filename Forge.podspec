@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = 'Forge'
+  s.name             = 'FlockForge'
   s.version          = '1.1.3'
   s.summary          = 'A scalable system to run tasks for your app with support for persistence.'
 
