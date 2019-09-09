@@ -25,7 +25,8 @@ Spec: https://docs.google.com/document/d/13LBDvwLBhahtnTZs5nPMVRNKRyCtP-MZ7yHMkV
 
 ## Requirements
 
-* Swift 5+
+* Swift 4.2+
+* iOS 11+
 
 ## Installation
 
