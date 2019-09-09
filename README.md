@@ -38,8 +38,30 @@ pod 'Forge',
 
 ## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+1. Create Forge and optionally listen to changes
 
+  ```swift
+  let forge = Forge(with: "test")
+  let changeManager = TestChangeManager() // An object following `ChangeManager` protocol.
+  forge.changeManager = changeManager
+  ```
+
+2. Add an executor to handle tasks for a particular type
+
+  ```swift
+  let executor = TestExecutor() // An object following `Executor` protocol.
+  try! forge.register(executor: executor, for: "t") // Register executor for tasks with type "t"
+  ```
+
+3. Create a task and submit to forge
+
+  ```swift
+  let params = ["params": "params"]
+  let task = try! Task(id: "id", type: "t", params: params) // Create task
+  forge.submit(task: task)
+  ```
+
+Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder. Run `pod install` before opening the workspace.
 
 ## Credits
 
