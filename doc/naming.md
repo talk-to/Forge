@@ -1,6 +1,6 @@
 # Naming
 
-X men fan , so just opened this [list](https://www.ranker.com/list/list-of-all-uncanny-x-men-members/super-hero-teams) and took one which matched most.
+X-Men fan , so just opened this [list](https://www.ranker.com/list/list-of-all-uncanny-x-men-members/super-hero-teams) and took one which matched most.
 
 Forge's powers:
 
