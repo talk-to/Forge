@@ -13,8 +13,6 @@ Simple Task handler for iOS
 - [Credits](#credits)
 - [License](#license)
 
-Spec: https://docs.google.com/document/d/13LBDvwLBhahtnTZs5nPMVRNKRyCtP-MZ7yHMkVamfT0/edit#
-
 ## Features
 
 - [x] Task persistence across app restarts
