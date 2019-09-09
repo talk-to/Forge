@@ -43,9 +43,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Credits
 
-Ayush Goel, ayush.g@flock.com
-Dinesh Kumar, dinesh.ku@flock.com
-Aditya Ghosh, aditya.gh@flock.com
+* Ayush Goel, ayush.g@flock.com
+* Dinesh Kumar, dinesh.ku@flock.com
+* Aditya Ghosh, aditya.gh@flock.com
 
 ## License
 
