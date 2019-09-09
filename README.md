@@ -81,6 +81,10 @@ Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder.
 
 ## Architecture
 
+![Architecture](doc/images/architecture.png)
+
+**Please read [architecture doc](doc/architecture.md) for more details.**
+
 
 ## Credits
 
