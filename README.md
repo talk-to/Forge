@@ -60,10 +60,25 @@ pod 'Forge',
   forge.submit(task: task)
   ```
 
+4. [Optional] Presenting the Forge Tasks View Controller
+
+	1. Create the View controller
+
+	  ```swift
+	  let storyBoard = UIStoryboard(name: "ForgeTask", bundle: Bundle(for: Forge.self))
+	  guard let forgeTasksVC = storyBoard.instantiateViewController(withIdentifier: "ForgeTasksViewController")
+	  as? ForgeTasksViewController else {
+	  fatalError("Could not instantiate TroubleshootController")
+	  }
+	  ```
+	  
+	2. Present the created ViewController in your view heirarchy.
+  
 Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder. Run `pod install` before opening the workspace.
 
-## Architecture
 
+
+## Architecture
 
 
 ## Credits
