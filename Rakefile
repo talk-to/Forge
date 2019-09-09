@@ -56,7 +56,7 @@ def release(**options)
   sh "git tag #{new_version}"
   sh "git push origin master"
   sh "git push origin #{new_version}"
-  sh "pod trunk push #{podspec_path}"
+  sh "pod trunk push --allow-warnings #{podspec_path}"
 end
 
 def current_branch
