@@ -9,8 +9,8 @@
 	* Yellow denoted Unknown
 * Each task is shown in a concise manner within a cell with its essential details upfront.
 
-![Abstract Design](images/ForgeTasksViewControllerIllustration.png)
+<img src="images/ForgeTasksViewControllerIllustration.png" width="480" height="950" />
 
 * If one wants to view a particular task in a more detailed manner, then on tapping on the task's cell another view is presented which contains some additional information.
 
-![Abstract Design](images/ForgeTaskDetailedViewController.png)
+<img src="images/ForgeTaskDetailedViewController.png" width="480" height="950" />
