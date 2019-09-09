@@ -16,11 +16,9 @@ also persists tasks with it so that any pending tasks can be restarted across ap
                        DESC
 
   s.homepage         = 'https://github.com/talk-to/Forge'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'BSD 3-Clause', :file => 'LICENSE' }
   s.author           = { 'Ayush Goel' => 'ayushgoel111@gmail.com' }
   s.source           = { :git => 'git@github.com:talk-to/Forge.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
   s.swift_version = '4.2'
@@ -31,9 +29,6 @@ also persists tasks with it so that any pending tasks can be restarted across ap
     'Forge' => ['Forge/Assets/*.xcdatamodeld', 'Forge/Classes/*.storyboard']
   }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Result', '~> 4.0'
 
 end
