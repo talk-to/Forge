@@ -10,6 +10,7 @@ Simple Task handler for iOS
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Example](#example)
+- [Architecture](#architecture)
 - [Credits](#credits)
 - [License](#license)
 
@@ -60,6 +61,10 @@ pod 'Forge',
   ```
 
 Note: To give it a spin, you can use the Tests project in [Tests](Tests) folder. Run `pod install` before opening the workspace.
+
+## Architecture
+
+
 
 ## Credits
 
