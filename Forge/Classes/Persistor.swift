@@ -1,6 +1,5 @@
 
 import CoreData
-import FlockSwiftUtils
 
 fileprivate let RetryAfter: TimeInterval = 5
 
@@ -176,6 +175,18 @@ extension Persistor: ExecutionDelegate {
       cdTask.state = .dormant
       cdTask.retryAt = Date(timeIntervalSinceNow: RetryAfter)
       self.context.saveNow()
+    }
+  }
+}
+
+extension NSManagedObjectContext {
+  public func saveNow() {
+    if self.hasChanges {
+      do {
+        try self.save()
+      } catch {
+        fatalError("Unresolved error \(error)")
+      }
     }
   }
 }

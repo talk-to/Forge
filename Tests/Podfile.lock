@@ -1,39 +1,22 @@
 PODS:
-  - FlockSwiftUtils (2.3.1):
-    - XCGLogger (~> 6.0.4)
-  - Forge (1.1.0):
-    - FlockSwiftUtils (~> 2.2)
+  - Forge (1.1.1):
     - Result (~> 4.0)
-  - ObjcExceptionBridging (1.0.1):
-    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
-  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - Result (4.1.0)
-  - XCGLogger (6.0.4):
-    - XCGLogger/Core (= 6.0.4)
-  - XCGLogger/Core (6.0.4):
-    - ObjcExceptionBridging
 
 DEPENDENCIES:
   - Forge (from `../`)
 
 SPEC REPOS:
-  "git@github.com:talk-to/private-cocoapod-specs.git":
-    - FlockSwiftUtils
   https://github.com/cocoapods/specs.git:
-    - ObjcExceptionBridging
     - Result
-    - XCGLogger
 
 EXTERNAL SOURCES:
   Forge:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FlockSwiftUtils: ce483f8dd439c02fcf30b87fd1b4420ec5b2dd3d
-  Forge: daafce4fada882f091c8f08836835790aa214dc2
-  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
+  Forge: ea9a2f764afef4c7ccb6d2b09fd75b60de7f27d5
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  XCGLogger: 4fc1bc0bdd5828cb8dc8da7a843536cda1bea8f3
 
 PODFILE CHECKSUM: dfc5787814aee6fffbae0a8968482b3fe101e377
 
