@@ -4,7 +4,7 @@ import CoreData
 fileprivate let RetryAfter: TimeInterval = 5
 
 class Persistor {
-  static func persistentContainer(UUID: String) -> NSPersistentContainer {
+  static func persistentContainer(UUID: String, storeURL: URL) -> NSPersistentContainer {
     guard let bundlePath = Bundle(for: Persistor.self).path(forResource: "Forge", ofType: "bundle"), // defined in podspec
       let forgeBundle = Bundle(path: bundlePath),
       let modelURL = forgeBundle.url(forResource: "forge", withExtension: "momd") else {
@@ -13,7 +13,10 @@ class Persistor {
     guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
       fatalError("Failed to create model from model URL for forge.")
     }
-    return NSPersistentContainer(name: UUID, managedObjectModel: model)
+    let description = NSPersistentStoreDescription(url: storeURL.appendingPathComponent(UUID + ".sqlite"))
+    let container = NSPersistentContainer(name: UUID, managedObjectModel: model)
+    container.persistentStoreDescriptions = [description]
+    return container
   }
 
   let UUID: String
@@ -22,10 +25,10 @@ class Persistor {
   let mainContext : NSManagedObjectContext
   let transformer: PersistentTaskToCDTaskTransformer
 
-  init(UUID: String) {
+  init(UUID: String, storeURL: URL) {
     self.UUID = UUID
     // FIXME: UUID should be name of sqlite created too.
-    self.persistentContainer = type(of: self).persistentContainer(UUID: UUID)
+    self.persistentContainer = type(of: self).persistentContainer(UUID: UUID, storeURL: storeURL)
     persistentContainer.loadPersistentStores { (description, error) in
       if let error = error {
         fatalError("Failed to load Core Data stack: \(error)")

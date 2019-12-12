@@ -25,9 +25,9 @@ public final class Forge {
   let executionManager: ExecutionManager
   let taskRetrier: TaskRetrier
 
-  public init(with UUID: String) {
+  public init(with UUID: String, storeURL: URL) {
     self.UUID = UUID
-    self.persistor = Persistor(UUID: UUID)
+    self.persistor = Persistor(UUID: UUID, storeURL: storeURL)
     self.persistor.markAllTasksReadyToExecute()
     self.executionManager = ExecutionManager()
     self.executionManager.executionDelegate = self.persistor
