@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal extension Int {
+extension Int {
   /**
    Returns a CGFloat *ranging from 0-1* value that can be used while creating a UIColor from Red, Green and Blue.
    - Example:
