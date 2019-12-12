@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Int {
+internal extension Int {
   /**
    Returns a CGFloat *ranging from 0-1* value that can be used while creating a UIColor from Red, Green and Blue.
    - Example:
@@ -16,7 +16,7 @@ extension Int {
    let color = UIColor(red: 31.rgb, green: 32.rgb, blue: 53.rgb, alpha: 1)
    ```
    */
-  public var rgb: CGFloat {
+  var rgb: CGFloat {
     return CGFloat(Double(self)/255.0)
   }
 }
