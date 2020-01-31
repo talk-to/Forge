@@ -180,7 +180,7 @@ extension Persistor: ExecutionDelegate {
 }
 
 extension NSManagedObjectContext {
-  public func saveNow() {
+  func saveNow() {
     if self.hasChanges {
       do {
         try self.save()
