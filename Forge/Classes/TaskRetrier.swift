@@ -1,7 +1,7 @@
 
 import Foundation
 
-private let ExecutionTimeGap = 1
+private let ExecutionTimeGap: TimeInterval = 1
 
 class TaskRetrier {
 
@@ -13,31 +13,22 @@ class TaskRetrier {
     self.persistor = persistor
   }
 
-  private var repeatingTimer: Timer?
-
   func startRetrialForTasks() {
-    if repeatingTimer == nil {
-      repeatingTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(ExecutionTimeGap), repeats: true) { [weak self] t in
-        guard let strongSelf = self else {
-          logger?.forgeWarn("Retrier deallocated, stopping..")
-          return
-        }
-        strongSelf.executeTasks()
-      }
-    }
+    continiuouslyExecuteTasks()
   }
 
-  deinit {
-    repeatingTimer?.invalidate()
-  }
-
-  private func executeTasks() {
+  private func continiuouslyExecuteTasks() {
     persistor.tasksPending { [weak self] (pTasks) in
       guard let self = self else { return }
       for pTask in pTasks {
         logger?.forgeInfo("Retrial of task : \(pTask)")
         self.executionManager.safeExecute(task: pTask)
       }
+      DispatchQueue.main.asyncAfter(
+        deadline: .now() + ExecutionTimeGap,
+        execute: { [weak self] in
+          self?.continiuouslyExecuteTasks()
+      })
     }
   }
 
