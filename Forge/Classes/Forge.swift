@@ -65,12 +65,6 @@ public final class Forge {
 
   public func register(executor: Executor, for type: String) throws {
     try executionManager.register(executor: executor, for: type)
-    persistor.tasks(ofType: type) { [weak self] pTasks in
-      guard let self = self else { return }
-      for pTask in pTasks {
-        self.executionManager.execute(task: pTask)
-      }
-    }
   }
 
   public func undoTask(id: String) {
