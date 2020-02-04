@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'FlockForge'
-  s.version          = '1.1.6'
+  s.version          = '1.1.7'
   s.summary          = 'A scalable system to run tasks for your app with support for persistence.'
 
 # This description is used to generate tags and improve search results.
