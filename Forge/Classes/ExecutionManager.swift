@@ -21,7 +21,7 @@ class ExecutionManager {
         strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
       case .failure(let error):
         switch error {
-        case .NonRetriable:
+        case .NonRetriable(_):
           logger?.forgeWarn("Task \(pTask) failed to complete : Non Retriable")
           strongSelf.executionDelegate?.delete(pTask: pTask)
           strongSelf.changeManager?.didComplete(task: pTask.task, result: result)
